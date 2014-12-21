@@ -3,7 +3,8 @@
  Date: 12/20/14
  Notes:
  */
-
+import controlP5.*;
+ControlP5 cp5;
 int fIter=100;//final number of iterations
 int clickCount=0;//number of times clicked
 PImage jBack;//juliaSet as background
@@ -26,41 +27,73 @@ void setup() {
   image(mFractal, 0, 0);
   rectMode(CENTER);
   colorMode(RGB, 255);
+  fill(200);
+  rect(fWidth+(width-fWidth)/2, height/2, width-fWidth, height);
+  PFont font = createFont("arial", 20);
+  cp5 = new ControlP5(this);
+  cp5.addTextfield("Real Component")
+    .setPosition(fWidth+(width-fWidth-100)/2, 250+(height-fHeight)/2)
+      .setSize(100, 40)
+        .setFont(font)
+          .setFocus(true)
+            .setColor(color(255, 0, 0))
+              .setAutoClear(false)
+                .setText("0")
+                  .setInputFilter(2)
+                    ;
+  cp5.addTextfield("Imaginary Component")
+    .setPosition(fWidth+(width-fWidth-100)/2, 320+(height-fHeight)/2)
+      .setSize(100, 40)
+        .setFont(font)
+          .setColor(color(255, 0, 0))
+            .setAutoClear(false)
+              .setText("0")
+                .setInputFilter(2)
+                  ;
 }
 
 void draw() {
-  //PImage back=drawMand(fIter, width, height).get(width/8-90, height/8-15, 180, 30);
   colorMode(RGB, 255);
   rectMode(CENTER);
-  fill(255);
   noStroke();
-  rect(fWidth/8, fHeight/8, 180, 30);
-  //  imageMode(CENTER);
-  //  if (clickCount%2==0)image(back, width/8, height/8);
-  //  else image(jBack, width/8, height/8);
-  fill(0);
-  stroke(0);
-  float xCoor=(mouseX/((float)fWidth/xZoom)+(cX-xZoom/2));
-  float yCoor=(cY+yZoom/2)-(mouseY/((float)fHeight/yZoom));
-  ComplexNumber display=new ComplexNumber(xCoor, yCoor);
-  textAlign(CENTER, CENTER);
-  text("Coordinates: " + display, fWidth/8, fHeight/8);
   fill(255);
-  noStroke();
-  rect(fWidth+(width-fWidth)/2, 100+(height-fHeight)/2, 200, 100);
+  rect(fWidth+(width-fWidth)/2, 100, 200, 100);//previous fractals button
   fill(0);
-  text("Previous Fractals", 1125, 100);
+  text("Previous Fractals", fWidth+(width-fWidth)/2, 100);
   if (mouseX>1025 && mouseX<1225 && mouseY>50 && mouseY<150) {
     fill(0);
-    rect(fWidth+(width-fWidth)/2, 100+(height-fHeight)/2, 200, 100);
+    rect(fWidth+(width-fWidth)/2, 100, 200, 100);
     fill(255);
-    text("Previous Fractals", 1125, 100);
+    text("Previous Fractals", fWidth+(width-fWidth)/2, 100);
+  } 
+  if (mouseX<1000 && mouseY<750) {//display coordinates
+    fill(200);
+    rect(fWidth+(width-fWidth)/2, 9*height/10, width-fWidth-20, 50);
+    float xCoor=(mouseX/((float)fWidth/xZoom)+(cX-xZoom/2));
+    float yCoor=(cY+yZoom/2)-(mouseY/((float)fHeight/yZoom));
+    ComplexNumber display=new ComplexNumber(xCoor, yCoor);
+    textAlign(CENTER, CENTER);
+    fill(0);
+    text("Coordinates: " + display, fWidth+(width-fWidth)/2, 9*height/10);
+  }
+  fill(0);
+  text("Complex Number to Generate Fractal\nReal & Imaginary Components:", fWidth+(width-fWidth)/2, 230+(height-fHeight)/2);
+  fill(255);
+  noStroke();
+  rect(fWidth+(width-fWidth)/2, 405, 100, 50);
+  fill(0);
+  text("Enter", fWidth+(width-fWidth)/2, 405);
+  if (mouseX>1075 && mouseX<1175 && mouseY>380 && mouseY<430) {
+    fill(0);
+    rect(fWidth+(width-fWidth)/2, 405, 100, 50);
+    fill(255);
+    text("Enter", fWidth+(width-fWidth)/2, 405);
   }
 }
 
 void mouseClicked() {
   PImage prevFractal;
-  if (mouseX<1000 && mouseY<750) {
+  if (mouseX<1000 && mouseY<750) {//clicking the fractal screen
     if (clickCount%2==0) {//julia set
       currentSet=1;
       cX=0;
@@ -74,7 +107,7 @@ void mouseClicked() {
       jBack=julia.get(fWidth/8-90, fHeight/8-15, 180, 30);
       imageMode(CORNER);
       image(julia, 0, 0);
-      julia.save("fractals"+clickCount+".png");
+      julia.save("juliasets/fractals"+clickCount+".png");
     } else {//mandelbrot set
       currentSet=0;
       cX=0;
@@ -87,15 +120,41 @@ void mouseClicked() {
     }
     clickCount++;
   }
-  if (mouseX>1025 && mouseX<1225 && mouseY>50 && mouseY<150) {
+  if (mouseX>1025 && mouseX<1225 && mouseY>50 && mouseY<150) {//previous fractal
     if (clickCount>0) {
       if (picNum>=clickCount) picNum=0;
-      prevFractal=loadImage("fractals"+picNum+".png");
+      prevFractal=loadImage("juliasets/fractals"+picNum+".png");
       imageMode(CENTER);
       image(prevFractal, fWidth/2, fHeight/2);
       picNum+=2;
       if (clickCount%2==0) clickCount--;
     }
+  }
+  if (mouseX>1075 && mouseX<1175 && mouseY>380 && mouseY<430) {//Enter button
+    if (clickCount%2!=0) clickCount++;
+    float realC=0;
+    float imagC=0;
+    String realText=null;
+    String imagText=null;
+    realText=cp5.get(Textfield.class, "Real Component").getText();
+    imagText=cp5.get(Textfield.class, "Imaginary Component").getText();
+    if (realText.length()>0 && realText!=null) realC=Float.parseFloat(realText);
+    else realC=0;
+    if (imagText.length()>0 && imagText!=null) imagC=Float.parseFloat(imagText);
+    else imagC=0;
+    currentSet=1;
+    cX=0;
+    cY=0;
+    xZoom=4;
+    yZoom=3;
+    juliaNum=new ComplexNumber(realC, imagC);
+    PImage julia=drawJulia(fIter, fWidth, fHeight, juliaNum);
+    jBack=julia.get(fWidth/8-90, fHeight/8-15, 180, 30);
+    imageMode(CORNER);
+    image(julia, 0, 0);
+    julia.save("juliasets/fractals"+clickCount+".png");
+    clickCount+=2;
+    if (clickCount%2==0) clickCount--;
   }
 }
 
@@ -194,3 +253,16 @@ PImage drawJuliaZoomed(int iter, int mWidth, int mHeight, ComplexNumber c, float
   mandelb.updatePixels();
   return mandelb;
 }
+
+public void clear() {
+  cp5.get(Textfield.class, "textValue").clear();
+}
+
+/*void controlEvent(ControlEvent theEvent) {
+ if (theEvent.isAssignableFrom(Textfield.class)) {
+ println("controlEvent: accessing a string from controller '"
+ +theEvent.getName()+"': "
+ +theEvent.getStringValue()
+ );
+ }
+ }*/
