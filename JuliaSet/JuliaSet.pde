@@ -1,11 +1,19 @@
 /*
  Name: Grace Zhang
  Date: 12/20/14
- Notes:
+ Notes: 
+   -Previous Fractals Button: Allows the user to cycle through previous Julia Sets that he/she had generated
+   -Uses ControlP5 to add textfields that allow the user to enter the a complex number (its real & imaginary components)
+     and generates a Julia Set from this complex number
+       -The textfield is restricted so that the user can only enter floats
+       -If no number is entered, the number is assumed to be zero
+   -Previously generated Julia Sets are saved as .png files in the folder named "juliasets"
+   -Button colors invert when mouse hovers over them
+   -Coordinates only print out when mouse is in the area of the fractal image
  */
 import controlP5.*;
 ControlP5 cp5;
-int fIter=100;//final number of iterations
+int fIter=50;//final number of iterations
 int clickCount=0;//number of times clicked
 PImage jBack;//juliaSet as background
 float zoom=0.9;//zoom factor
