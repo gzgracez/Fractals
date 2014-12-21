@@ -13,6 +13,7 @@ float xZoom=4;//x width of coordinate plane
 float yZoom=3;// y width of coordinate plane
 float cX=0, cY=0;//center coordinates
 int currentSet=0; //0-mandelbrot
+//int gifCount=0;
 ComplexNumber juliaNum=new ComplexNumber(0, 0);
 
 void setup() {
@@ -23,7 +24,7 @@ void setup() {
 }
 
 void draw() {
-  PImage back=drawMand(fIter, width, height).get(width/8-90, height/8-15, 180, 30);
+  //PImage back=drawMand(fIter, width, height).get(width/8-90, height/8-15, 180, 30);
   colorMode(RGB, 255);
   rectMode(CENTER);
   fill(255);
@@ -73,14 +74,17 @@ void keyReleased() {
   if (key == 'z' || key == 'Z' || keyCode==RIGHT || keyCode==UP) {
     cX=(mouseX/((float)width/xZoom)+(cX-xZoom/2));
     cY=(cY+yZoom/2)-(mouseY/((float)height/yZoom));
-    if (clickCount%2==1) zoomed=drawJuliaZoomed(fIter, width, height, juliaNum, cX, cY, zoom);
-    else zoomed=drawMandelbrotZoomed(fIter, width, height, cX, cY, zoom);
+    if (clickCount%2==1) {
+      zoomed=drawJuliaZoomed(fIter, width, height, juliaNum, cX, cY, zoom);
+      //saveFrame("fractals"+gifCount+".gif");
+      //gifCount++;
+    } else zoomed=drawMandelbrotZoomed(fIter, width, height, cX, cY, zoom);
     imageMode(CORNER);
     image(zoomed, 0, 0);
   } else if (key == 'x' || key == 'X' || keyCode==LEFT || keyCode==DOWN) {
     cX=(mouseX/((float)width/xZoom)+(cX-xZoom/2));
     cY=(cY+yZoom/2)-(mouseY/((float)height/yZoom));
-    if (clickCount%2==1) zoomed=drawJuliaZoomed(fIter, width, height, juliaNum, cX, cY, zoomOut);
+    if (clickCount%2==1) zoomed=drawJuliaZoomed(fIter, width, height, juliaNum, cX, cY, zoomOut); 
     else zoomed=drawMandelbrotZoomed(fIter, width, height, cX, cY, zoom);
     imageMode(CORNER);
     image(zoomed, 0, 0);
