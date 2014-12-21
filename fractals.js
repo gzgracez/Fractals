@@ -1,4 +1,4 @@
-var fIter = 50; //final number of iterations
+var fIter = 30; //final number of iterations
 var clickCount = 0; //number of times clicked
 var jBack; //juliaSet as background
 var zoom = 0.9; //zoom factor
