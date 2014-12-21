@@ -76,6 +76,8 @@ void draw() {
     fill(0);
     text("Coordinates: " + display, fWidth+(width-fWidth)/2, 9*height/10);
   }
+  fill(200);
+  rect(fWidth+(width-fWidth)/2, 230+(height-fHeight)/2, width-fWidth-20, 50);
   fill(0);
   text("Complex Number to Generate Fractal\nReal & Imaginary Components:", fWidth+(width-fWidth)/2, 230+(height-fHeight)/2);
   fill(255);
