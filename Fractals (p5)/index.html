@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Fractals</title>
+
+  <link type="text/css" rel="stylesheet" href="style.css" />
+  <script language="javascript" src="javascript/p5.js"></script>
+  <script language="javascript" src="javascript/p5.dom.js"></script>
+  <!--<script language="javascript" src="../addons/p5.sound.js"></script>-->
+  <script language="javascript" src="fractals.js"></script>
+  <!-- this line removes any default padding and style. you might only need one of these values set. -->
+
+</head>
+
+<body>
+
+  <!--<h4>-->
+  <p>
+    The dots connected with lines mark show the trajectory of a particle through space. The colored bars on the right display the sum of the kinetic energy along the trajectory; the sum of the potential energy along the trajectory; and the action, which is
+    the difference between the two.
+  </p>
+  <p>
+    Use the dropdown menu to pick a potential energy function and the slider to control the number of dots. Use the mouse to select the dots and adjust the trajectory. Click any button on the keyboard several times and the computer will minimize the action.
+  </p>
+  <hr>
+  <p>
+    Potential Energy Function:
+    <select autofocus id="menu1" onchange="myFunction()">
+
+      <option value=0>Constant (Free Particle)</option>
+      <option value=1 selected="selected">Linear Gradient Upward</option>
+      <option value=2>Linear Gradient Leftward</option>
+      <option value=3>Energy Step</option>
+      <option value=4>Inverse Well</option>
+      <option value=5>Simple Harmonic</option>
+    </select>
+    <span id="sliderPos"> Number of dots</span>
+  </p>
+  <div id="myContainer"></div>
+
+  <!--<div id="sliderPos"> Number of dots</div>-->
+
+
+  <div id="myContainer2"></div>
+</body>
+
+</html>
