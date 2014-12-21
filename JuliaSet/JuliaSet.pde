@@ -135,7 +135,6 @@ PImage drawJulia(int iter, int mWidth, int mHeight, ComplexNumber c) {
 PImage drawMandelbrotZoomed(int iter, int mWidth, int mHeight, float x1, float y1, float zoom1) {
   xZoom*=zoom1;
   yZoom*=zoom1;
-  println(xZoom);
   ComplexNumber zero=new ComplexNumber(0, 0);
   PImage mandelb=createImage(mWidth, mHeight, ARGB);
   colorMode(HSB, iter);
@@ -153,7 +152,6 @@ PImage drawMandelbrotZoomed(int iter, int mWidth, int mHeight, float x1, float y
 PImage drawJuliaZoomed(int iter, int mWidth, int mHeight, ComplexNumber c, float x1, float y1, float zoom1) {
   xZoom*=zoom1;
   yZoom*=zoom1;
-  println(xZoom);
   PImage mandelb=createImage(mWidth, mHeight, ARGB);
   colorMode(HSB, iter);
   mandelb.loadPixels();
