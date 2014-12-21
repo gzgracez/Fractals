@@ -15,7 +15,7 @@ var juliaNum = new ComplexNumber(0, 0);
 var zero = new ComplexNumber(0, 0);
 
 function setup() {
-  var cnv = createCanvas(1250, 750);
+  var cnv = createCanvas(fWidth, fHeight);
   cnv.parent("myContainer");
   textSize(14);
   textFont("Helvetica");
@@ -35,15 +35,16 @@ function draw() {
 
 var drawMand = function(iter, mWidth, mHeight) {
   var mandelb = createImage(mWidth, mHeight);
-  //colorMode(RGB, iter);
+  colorMode(HSB);
   mandelb.loadPixels();
   for (var h = 0.0; h < 4.0 * mandelb.height; h += 4.0) {
     for (var w = 0.0; w < 4.0 * mandelb.width; w += 4.0) {
       var a = new ComplexNumber((w / 4.0) / (mandelb.width / 4.0) - 2.0, 1.5 - ((h / 4.0) / (mandelb.height / 3.0)));
       //mandelb.pixels[h*mandelb.width+w]=color(mandelbrot(zero, a, 0, iter), iter*0.75, iter);
-      mandelb.pixels[h * mandelb.width + w] = map(mandelbrot(zero, a, 0, iter), 0, iter, 0, 255);
-      mandelb.pixels[h * mandelb.width + w + 1] = 0;
-      mandelb.pixels[h * mandelb.width + w + 2] = 0;
+      var color1 = color(map(mandelbrot(zero, a, 0, iter), 0, iter, 0, 255), 191, 255);
+      mandelb.pixels[h * mandelb.width + w] = red(color1);
+      mandelb.pixels[h * mandelb.width + w + 1] = green(color1);
+      mandelb.pixels[h * mandelb.width + w + 2] = blue(color1);
       mandelb.pixels[h * mandelb.width + w + 3] = 255;
     }
   }
