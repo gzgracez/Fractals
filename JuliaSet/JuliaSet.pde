@@ -13,14 +13,19 @@ float xZoom=4;//x width of coordinate plane
 float yZoom=3;// y width of coordinate plane
 float cX=0, cY=0;//center coordinates
 int currentSet=0; //0-mandelbrot
+int fWidth=1000;
+int fHeight=750;
+int picNum=0;//for previous julia sets
 //int gifCount=0;
 ComplexNumber juliaNum=new ComplexNumber(0, 0);
 
 void setup() {
-  size(1200, 900);
+  size(1250, 750);
   imageMode(CORNER);
-  PImage mFractal=drawMand(fIter, width, height);
+  PImage mFractal=drawMand(fIter, fWidth, fHeight);
   image(mFractal, 0, 0);
+  rectMode(CENTER);
+  colorMode(RGB, 255);
 }
 
 void draw() {
@@ -29,63 +34,88 @@ void draw() {
   rectMode(CENTER);
   fill(255);
   noStroke();
-  rect(width/8, height/8, 180, 30);
+  rect(fWidth/8, fHeight/8, 180, 30);
   //  imageMode(CENTER);
   //  if (clickCount%2==0)image(back, width/8, height/8);
   //  else image(jBack, width/8, height/8);
   fill(0);
   stroke(0);
-  float xCoor=(mouseX/((float)width/xZoom)+(cX-xZoom/2));
-  float yCoor=(cY+yZoom/2)-(mouseY/((float)height/yZoom));
+  float xCoor=(mouseX/((float)fWidth/xZoom)+(cX-xZoom/2));
+  float yCoor=(cY+yZoom/2)-(mouseY/((float)fHeight/yZoom));
   ComplexNumber display=new ComplexNumber(xCoor, yCoor);
   textAlign(CENTER, CENTER);
-  text("Coordinates: " + display, width/8, height/8);
+  text("Coordinates: " + display, fWidth/8, fHeight/8);
+  fill(255);
+  noStroke();
+  rect(fWidth+(width-fWidth)/2, 100+(height-fHeight)/2, 200, 100);
+  fill(0);
+  text("Previous Fractals", 1125, 100);
+  if (mouseX>1025 && mouseX<1225 && mouseY>50 && mouseY<150) {
+    fill(0);
+    rect(fWidth+(width-fWidth)/2, 100+(height-fHeight)/2, 200, 100);
+    fill(255);
+    text("Previous Fractals", 1125, 100);
+  }
 }
 
 void mouseClicked() {
-  clickCount++;
-  if (clickCount%2==1) {//julia set
-    currentSet=1;
-    cX=0;
-    cY=0;
-    xZoom=4;
-    yZoom=3;
-    float xCoor=(mouseX/((float)width/4)-2);
-    float yCoor=-1*(mouseY/((float)height/3)-1.5);
-    juliaNum=new ComplexNumber(xCoor, yCoor);
-    PImage julia=drawJulia(fIter, width, height, juliaNum);
-    jBack=julia.get(width/8-90, height/8-15, 180, 30);
-    imageMode(CORNER);
-    image(julia, 0, 0);
-  } else {//mandelbrot set
-    currentSet=0;
-    cX=0;
-    cY=0;
-    xZoom=4;
-    yZoom=3;
-    imageMode(CORNER);
-    PImage mFractal=drawMand(fIter, width, height);
-    image(mFractal, 0, 0);
+  PImage prevFractal;
+  if (mouseX<1000 && mouseY<750) {
+    if (clickCount%2==0) {//julia set
+      currentSet=1;
+      cX=0;
+      cY=0;
+      xZoom=4;
+      yZoom=3;
+      float xCoor=(mouseX/((float)fWidth/4)-2);
+      float yCoor=-1*(mouseY/((float)fHeight/3)-1.5);
+      juliaNum=new ComplexNumber(xCoor, yCoor);
+      PImage julia=drawJulia(fIter, fWidth, fHeight, juliaNum);
+      jBack=julia.get(fWidth/8-90, fHeight/8-15, 180, 30);
+      imageMode(CORNER);
+      image(julia, 0, 0);
+      julia.save("fractals"+clickCount+".png");
+    } else {//mandelbrot set
+      currentSet=0;
+      cX=0;
+      cY=0;
+      xZoom=4;
+      yZoom=3;
+      imageMode(CORNER);
+      PImage mFractal=drawMand(fIter, fWidth, fHeight);
+      image(mFractal, 0, 0);
+    }
+    clickCount++;
+  }
+  if (mouseX>1025 && mouseX<1225 && mouseY>50 && mouseY<150) {
+    if (clickCount>0) {
+      if (picNum>=clickCount) picNum=0;
+      prevFractal=loadImage("fractals"+picNum+".png");
+      imageMode(CENTER);
+      image(prevFractal, fWidth/2, fHeight/2);
+      picNum+=2;
+      if (clickCount%2==0) clickCount--;
+    }
   }
 }
 
 void keyReleased() {
   PImage zoomed;
   if (key == 'z' || key == 'Z' || keyCode==RIGHT || keyCode==UP) {
-    cX=(mouseX/((float)width/xZoom)+(cX-xZoom/2));
-    cY=(cY+yZoom/2)-(mouseY/((float)height/yZoom));
+    cX=(mouseX/((float)fWidth/xZoom)+(cX-xZoom/2));
+    cY=(cY+yZoom/2)-(mouseY/((float)fHeight/yZoom));
     if (clickCount%2==1) {
-      zoomed=drawJuliaZoomed(fIter, width, height, juliaNum, cX, cY, zoom);
+      zoomed=drawJuliaZoomed(fIter, fWidth, fHeight, juliaNum, cX, cY, zoom);
       //saveFrame("fractals"+gifCount+".gif");
       //gifCount++;
-    } else zoomed=drawMandelbrotZoomed(fIter, width, height, cX, cY, zoom);
+    } else zoomed=drawMandelbrotZoomed(fIter, fWidth, fHeight, cX, cY, zoom);
     imageMode(CORNER);
     image(zoomed, 0, 0);
   } else if (key == 'x' || key == 'X' || keyCode==LEFT || keyCode==DOWN) {
-    cX=(mouseX/((float)width/xZoom)+(cX-xZoom/2));
-    cY=(cY+yZoom/2)-(mouseY/((float)height/yZoom));
-    if (clickCount%2==1) zoomed=drawJuliaZoomed(fIter, width, height, juliaNum, cX, cY, zoomOut); 
-    else zoomed=drawMandelbrotZoomed(fIter, width, height, cX, cY, zoom);
+    cX=(mouseX/((float)fWidth/xZoom)+(cX-xZoom/2));
+    cY=(cY+yZoom/2)-(mouseY/((float)fHeight/yZoom));
+    if (clickCount%2==1) zoomed=drawJuliaZoomed(fIter, fWidth, fHeight, juliaNum, cX, cY, zoomOut); 
+    else zoomed=drawMandelbrotZoomed(fIter, fWidth, fHeight, cX, cY, zoom);
     imageMode(CORNER);
     image(zoomed, 0, 0);
   }
