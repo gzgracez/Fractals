@@ -10,7 +10,15 @@
   <!--<script language="javascript" src="../addons/p5.sound.js"></script>-->
   <script language="javascript" src="fractals.js"></script>
   <!-- this line removes any default padding and style. you might only need one of these values set. -->
-
+  <style>
+  /*table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }*/
+  th {
+    text-align: left;
+  }
+</style>
 </head>
 
 <body>
@@ -41,7 +49,26 @@
   </p> -->
   <center><div id="myContainer"></div></center>
   <!-- <button type="button">Save Current Fractal</button> -->
-  <!--<div id="sliderPos"> Number of dots</div>-->
+  <p></p>
+
+  <table style="width:43%">
+    <tr>
+      <td>
+        <div id="sliderPos" class="span">
+          Number of Iterations: 
+        </div>
+      </td>
+      <td>
+        <div id="iterTextPos" class="span"></div>
+      </td>
+    </tr>
+  </table>
+  <p>(Goes from 3 to 100 iterations. 30 iterations is the default. May take a while to load. More iterations will take longer to load.)</p>
+
+  <h1></h1>
+  <div id="buttonPos">
+    Save Current Fractal:
+  </div>
 
 
   <div id="myContainer2"></div>

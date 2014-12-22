@@ -67,7 +67,7 @@ void setup() {
         .setFont(font)
           .setColor(color(255, 0, 0))
             .setAutoClear(false)
-              .setText("0")
+              .setText("50")
                 .setInputFilter(1)
                   ;
 }

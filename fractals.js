@@ -1,3 +1,6 @@
+var iterSlider;
+var text;
+
 var fIter = 30; //final number of iterations
 var clickCount = 0; //number of times clicked
 var jBack; //juliaSet as background
@@ -27,15 +30,22 @@ function setup() {
   colorMode(RGB, 255);
   fill(200);
   rect(fWidth + (width - fWidth) / 2, height / 2, width - fWidth, height);*/
-  var button = createButton("Save Current Fractal");
+  var button = createButton("Save");
+  button.parent("buttonPos");
   button.mousePressed(saveClicked);
+  iterSlider = createSlider(3, 100, 30);
+  iterSlider.parent("sliderPos");
+  iterSlider.size(300);
+  fIter = iterSlider.value();
+  text = createDiv(iterSlider.value());
+  text.parent("iterTextPos");
 }
 
 function draw() {
-
+  iterSlider.mouseReleased(numCheck);
 }
 
-function saveClicked(){
+function saveClicked() {
   save("myFractal.png");
 }
 
@@ -189,9 +199,9 @@ function ComplexNumber(a, b) {
     return d;
   };
 
-};
+}
 
-var HSBtoRGB = function(h, s, b) {
+/*var HSBtoRGB = function(h, s, b) {
   var c = (1 - Math.abs(2 * b - 1)) * s;
   var x = c * (1 - Math.abs((h / 60) % 2 - 1));
   var m = b - (c / 2);
@@ -201,66 +211,80 @@ var HSBtoRGB = function(h, s, b) {
   var B;
   switch (true) {
     case test < 1:
-    r = c + m;
-    g = x + m;
-    B = m;
-    break;
+      r = c + m;
+      g = x + m;
+      B = m;
+      break;
     case test < 2:
-    r = x + m;
-    g = c + m;
-    B = m;
-    break;
+      r = x + m;
+      g = c + m;
+      B = m;
+      break;
     case test < 3:
-    r = m;
-    g = c + m;
-    B = x + m;
-    break;
+      r = m;
+      g = c + m;
+      B = x + m;
+      break;
     case test < 4:
-    r = m;
-    g = x + m;
-    B = c + m;
-    break;
+      r = m;
+      g = x + m;
+      B = c + m;
+      break;
     case test < 5:
-    r = x + m;
-    g = m;
-    B = c + m;
-    break;
+      r = x + m;
+      g = m;
+      B = c + m;
+      break;
     case test < 6:
-    r = c + m;
-    g = m;
-    B = x + m;
-    break;
+      r = c + m;
+      g = m;
+      B = x + m;
+      break;
   }
   return [r, g, B];
-};
+};*/
 
 function mouseClicked() {
-  if (mouseX>0 && mouseX<fWidth && mouseY>0 && mouseY<fHeight){
-  if (clickCount % 2 == 0) { //julia set
-    currentSet = 1;
-    cX = 0;
-    cY = 0;
-    xZoom = 4;
-    yZoom = 3;
-    var xCoor = (mouseX / (fWidth / 4.0) - 2.0);
-    var yCoor = -1.0 * (mouseY / (fHeight / 3.0) - 1.5);
-    juliaNum = new ComplexNumber(xCoor, yCoor);
-    var julia = drawJulia(fIter, fWidth, fHeight, juliaNum);
-    imageMode(CORNER);
-    image(julia, 0, 0);
-    // julia.save("juliasets/fractals"+clickCount+".png");
-  } else { //mandelbrot set
-    currentSet = 0;
-    cX = 0;
-    cY = 0;
-    xZoom = 4;
-    yZoom = 3;
-    imageMode(CORNER);
-    var mFractal = drawMand(fIter, fWidth, fHeight);
-    image(mFractal, 0, 0);
+  if (mouseX > 0 && mouseX < fWidth && mouseY > 0 && mouseY < fHeight) {
+    if (clickCount % 2 === 0) { //julia set
+      currentSet = 1;
+      cX = 0;
+      cY = 0;
+      xZoom = 4;
+      yZoom = 3;
+      var xCoor = (mouseX / (fWidth / 4.0) - 2.0);
+      var yCoor = -1.0 * (mouseY / (fHeight / 3.0) - 1.5);
+      juliaNum = new ComplexNumber(xCoor, yCoor);
+      var julia = drawJulia(fIter, fWidth, fHeight, juliaNum);
+      imageMode(CORNER);
+      image(julia, 0, 0);
+      // julia.save("juliasets/fractals"+clickCount+".png");
+    } else { //mandelbrot set
+      currentSet = 0;
+      cX = 0;
+      cY = 0;
+      xZoom = 4;
+      yZoom = 3;
+      imageMode(CORNER);
+      var mFractal = drawMand(fIter, fWidth, fHeight);
+      image(mFractal, 0, 0);
+    }
+    clickCount++;
   }
-  clickCount++;
 }
+
+function numCheck() {
+  if (iterSlider.value() != fIter) {
+    text.remove();
+    text = createDiv(iterSlider.value());
+    text.parent("iterTextPos");
+    fIter = iterSlider.value();
+    var iterPic;
+    if (clickCount%2==1) iterPic=drawJulia(fIter, fWidth, fHeight, juliaNum);
+    else iterPic=drawMand(fIter, fWidth, fHeight);
+    imageMode(CORNER);
+    image(iterPic, 0, 0);
+  }
 }
 
 
