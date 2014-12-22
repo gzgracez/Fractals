@@ -211,8 +211,8 @@ void mouseClicked() {
     if (iterText.length()>0 && iterText!=null) {
       fIter=Integer.parseInt(iterText);
       PImage iterPic;
-      if (clickCount%2==1) iterPic=drawJulia(fIter, fWidth, fHeight, juliaNum);
-      else iterPic=drawMand(fIter, fWidth, fHeight);
+      if (clickCount%2==1) iterPic=drawJuliaZoomed(fIter, fWidth, fHeight, juliaNum, cX, cY, 1);
+      else iterPic=drawMandelbrotZoomed(fIter, fWidth, fHeight, cX, cY, 1);
       imageMode(CORNER);
       image(iterPic, 0, 0);
     }

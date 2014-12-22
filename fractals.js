@@ -12,8 +12,8 @@ var yZoom = 3; // y width of coordinate plane
 var cX = 0; //center coordinates
 var cY = 0; //center coordinates
 var currentSet = 0; //0-mandelbrot
-var fWidth = 400;//1000
-var fHeight = 300;//750
+var fWidth = 400; //1000
+var fHeight = 300; //750
 var picNum = 0; //for previous julia sets
 var juliaNum = new ComplexNumber(0, 0);
 var zero = new ComplexNumber(0, 0);
@@ -27,10 +27,6 @@ function setup() {
   imageMode(CORNER);
   var mFractal = drawMand(fIter, fWidth, fHeight);
   image(mFractal, 0, 0);
-  /*rectMode(CENTER);
-  colorMode(RGB, 255);
-  fill(200);
-  rect(fWidth + (width - fWidth) / 2, height / 2, width - fWidth, height);*/
   var button = createButton("Save");
   button.parent("buttonPos");
   button.mousePressed(saveClicked);
@@ -89,14 +85,14 @@ var drawMand = function(iter, mWidth, mHeight) {
 };
 
 var drawJuliaZoomed = function(iter, mWidth, mHeight, c, x1, y1, zoom1) {
-  xZoom*=zoom1;
-  yZoom*=zoom1;
+  xZoom *= zoom1;
+  yZoom *= zoom1;
   var mandelb = createImage(mWidth, mHeight);
   colorMode(HSB);
   mandelb.loadPixels();
   for (var h = 0.0; h < 4.0 * mandelb.height; h += 4.0) {
     for (var w = 0.0; w < 4.0 * mandelb.width; w += 4.0) {
-      var a = new ComplexNumber((w / 4.0) / (mandelb.width / xZoom) + (x1-xZoom/2), (y1+yZoom/2) - ((h / 4.0) / (mandelb.height / yZoom)));
+      var a = new ComplexNumber((w / 4.0) / (mandelb.width / xZoom) + (x1 - xZoom / 2), (y1 + yZoom / 2) - ((h / 4.0) / (mandelb.height / yZoom)));
       //mandelb.pixels[h*mandelb.width+w]=color(mandelbrot(zero, a, 0, iter), iter*0.75, iter);
       var color1 = color(map(mandelbrot(a, c, 0, iter), 0, iter, 0, 255), 191, 255);
       mandelb.pixels[h * mandelb.width + w] = red(color1);
@@ -110,14 +106,14 @@ var drawJuliaZoomed = function(iter, mWidth, mHeight, c, x1, y1, zoom1) {
 };
 
 var drawMandZoomed = function(iter, mWidth, mHeight, x1, y1, zoom1) {
-  xZoom*=zoom1;
-  yZoom*=zoom1;
+  xZoom *= zoom1;
+  yZoom *= zoom1;
   var mandelb = createImage(mWidth, mHeight);
   colorMode(HSB);
   mandelb.loadPixels();
   for (var h = 0.0; h < 4.0 * mandelb.height; h += 4.0) {
     for (var w = 0.0; w < 4.0 * mandelb.width; w += 4.0) {
-      var a = new ComplexNumber((w / 4.0) / (mandelb.width / xZoom) +(x1-xZoom/2.0), (y1+yZoom/2) - ((h / 4.0) / (mandelb.height / yZoom)));
+      var a = new ComplexNumber((w / 4.0) / (mandelb.width / xZoom) + (x1 - xZoom / 2.0), (y1 + yZoom / 2) - ((h / 4.0) / (mandelb.height / yZoom)));
       //mandelb.pixels[h*mandelb.width+w]=color(mandelbrot(zero, a, 0, iter), iter*0.75, iter);
       var color1 = color(map(mandelbrot(zero, a, 0, iter), 0, iter, 0, 255), 191, 255);
       mandelb.pixels[h * mandelb.width + w] = red(color1);
@@ -258,7 +254,6 @@ function mouseClicked() {
       var julia = drawJulia(fIter, fWidth, fHeight, juliaNum);
       imageMode(CORNER);
       image(julia, 0, 0);
-      // julia.save("juliasets/fractals"+clickCount+".png");
     } else { //mandelbrot set
       currentSet = 0;
       cX = 0;
@@ -275,20 +270,19 @@ function mouseClicked() {
 
 function keyReleased() {
   var zoomed;
-  if (key === 'z' || key === 'Z' || keyCode===RIGHT_ARROW || keyCode===UP_ARROW) {
-    cX=(mouseX/(fWidth/xZoom)+(cX-xZoom/2));
-    cY=(cY+yZoom/2)-(mouseY/(fHeight/yZoom));
-    if (clickCount%2===1) {
-      zoomed=drawJuliaZoomed(fIter, fWidth, fHeight, juliaNum, cX, cY, zoom);
-    } 
-    else zoomed=drawMandZoomed(fIter, fWidth, fHeight, cX, cY, zoom);
+  if (key === 'z' || key === 'Z' || keyCode === RIGHT_ARROW || keyCode === UP_ARROW) {
+    cX = (mouseX / (fWidth / xZoom) + (cX - xZoom / 2));
+    cY = (cY + yZoom / 2) - (mouseY / (fHeight / yZoom));
+    if (clickCount % 2 === 1) {
+      zoomed = drawJuliaZoomed(fIter, fWidth, fHeight, juliaNum, cX, cY, zoom);
+    } else zoomed = drawMandZoomed(fIter, fWidth, fHeight, cX, cY, zoom);
     imageMode(CORNER);
     image(zoomed, 0, 0);
-  } else if (key === 'x' || key === 'X' || keyCode===LEFT_ARROW || keyCode===DOWN_ARROW) {
-    cX=(mouseX/(fWidth/xZoom)+(cX-xZoom/2));
-    cY=(cY+yZoom/2)-(mouseY/(fHeight/yZoom));
-    if (clickCount%2==1) zoomed=drawJuliaZoomed(fIter, fWidth, fHeight, juliaNum, cX, cY, zoomOut); 
-    else zoomed=drawMandZoomed(fIter, fWidth, fHeight, cX, cY, zoomOut);
+  } else if (key === 'x' || key === 'X' || keyCode === LEFT_ARROW || keyCode === DOWN_ARROW) {
+    cX = (mouseX / (fWidth / xZoom) + (cX - xZoom / 2));
+    cY = (cY + yZoom / 2) - (mouseY / (fHeight / yZoom));
+    if (clickCount % 2 == 1) zoomed = drawJuliaZoomed(fIter, fWidth, fHeight, juliaNum, cX, cY, zoomOut);
+    else zoomed = drawMandZoomed(fIter, fWidth, fHeight, cX, cY, zoomOut);
     imageMode(CORNER);
     image(zoomed, 0, 0);
   }
@@ -301,8 +295,8 @@ function numCheck() {
     text.parent("iterTextPos");
     fIter = iterSlider.value();
     var iterPic;
-    if (clickCount%2==1) iterPic=drawJulia(fIter, fWidth, fHeight, juliaNum);
-    else iterPic=drawMand(fIter, fWidth, fHeight);
+    if (clickCount % 2 == 1) iterPic = drawJuliaZoomed(fIter, fWidth, fHeight, juliaNum, cX, cY, 1);
+    else iterPic = drawMandZoomed(fIter, fWidth, fHeight, cX, cY, 1);
     imageMode(CORNER);
     image(iterPic, 0, 0);
   }
