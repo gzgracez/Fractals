@@ -3,3 +3,6 @@ body {
 	margin-left: 1em;
 	font-size: 18px;
 }
+th {
+   text-align: left;
+}
