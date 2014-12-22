@@ -1,5 +1,6 @@
 var iterSlider;
 var text;
+var textC;
 
 var fIter = 30; //final number of iterations
 var clickCount = 0; //number of times clicked
