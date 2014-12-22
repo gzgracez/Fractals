@@ -288,7 +288,7 @@ function keyReleased() {
     cX=(mouseX/(fWidth/xZoom)+(cX-xZoom/2));
     cY=(cY+yZoom/2)-(mouseY/(fHeight/yZoom));
     if (clickCount%2==1) zoomed=drawJuliaZoomed(fIter, fWidth, fHeight, juliaNum, cX, cY, zoomOut); 
-    else zoomed=drawMandZoomed(fIter, fWidth, fHeight, cX, cY, zoom);
+    else zoomed=drawMandZoomed(fIter, fWidth, fHeight, cX, cY, zoomOut);
     imageMode(CORNER);
     image(zoomed, 0, 0);
   }
