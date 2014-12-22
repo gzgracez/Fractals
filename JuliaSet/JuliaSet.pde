@@ -2,14 +2,16 @@
  Name: Grace Zhang
  Date: 12/20/14
  Notes: 
-   -Previous Fractals Button: Allows the user to cycle through previous Julia Sets that he/she had generated
-   -Uses ControlP5 to add textfields that allow the user to enter the a complex number (its real & imaginary components)
-     and generates a Julia Set from this complex number
-       -The textfield is restricted so that the user can only enter floats
-       -If no number is entered, the number is assumed to be zero
-   -Previously generated Julia Sets are saved as .png files in the folder named "juliasets"
-   -Button colors invert when mouse hovers over them
-   -Coordinates only print out when mouse is in the area of the fractal image
+ -Previous Fractals Button: Allows the user to cycle through previous Julia Sets that he/she had generated
+ -Uses ControlP5 to add textfields that allow the user to enter the a complex number (its real & imaginary components)
+ and generates a Julia Set from this complex number
+   -The textfield is restricted so that the user can only enter floats
+   -If no number is entered, the number is assumed to be zero
+ -Uses ControlP5 to add textfields that allow the user to enter the desired number of iterations
+   -Immediately shows effect (in the image of the fractal) when number of iterations is changed
+ -Previously generated Julia Sets are saved as .png files in the folder named "juliasets"
+ -Button colors invert when mouse hovers over them
+ -Coordinates only print out when mouse is in the area of the fractal image
  */
 import controlP5.*;
 ControlP5 cp5;
@@ -35,12 +37,13 @@ void setup() {
   image(mFractal, 0, 0);
   rectMode(CENTER);
   colorMode(RGB, 255);
+  noStroke();
   fill(200);
   rect(fWidth+(width-fWidth)/2, height/2, width-fWidth, height);
   PFont font = createFont("arial", 20);
   cp5 = new ControlP5(this);
   cp5.addTextfield("Real Component")
-    .setPosition(fWidth+(width-fWidth-100)/2, 250+(height-fHeight)/2)
+    .setPosition(fWidth+(width-fWidth-100)/2, 250)
       .setSize(100, 40)
         .setFont(font)
           .setFocus(true)
@@ -50,13 +53,22 @@ void setup() {
                   .setInputFilter(2)
                     ;
   cp5.addTextfield("Imaginary Component")
-    .setPosition(fWidth+(width-fWidth-100)/2, 320+(height-fHeight)/2)
+    .setPosition(fWidth+(width-fWidth-100)/2, 320)
       .setSize(100, 40)
         .setFont(font)
           .setColor(color(255, 0, 0))
             .setAutoClear(false)
               .setText("0")
                 .setInputFilter(2)
+                  ;
+  cp5.addTextfield("Number of Iterations:")
+    .setPosition(fWidth+(width-fWidth-100)/2, 480)
+      .setSize(100, 40)
+        .setFont(font)
+          .setColor(color(255, 0, 0))
+            .setAutoClear(false)
+              .setText("0")
+                .setInputFilter(1)
                   ;
 }
 
@@ -69,25 +81,20 @@ void draw() {
   fill(0);
   text("Previous Fractals", fWidth+(width-fWidth)/2, 100);
   if (mouseX>1025 && mouseX<1225 && mouseY>50 && mouseY<150) {
+    noStroke();
     fill(0);
     rect(fWidth+(width-fWidth)/2, 100, 200, 100);
     fill(255);
     text("Previous Fractals", fWidth+(width-fWidth)/2, 100);
   } 
-  if (mouseX<1000 && mouseY<750) {//display coordinates
-    fill(200);
-    rect(fWidth+(width-fWidth)/2, 9*height/10, width-fWidth-20, 50);
-    float xCoor=(mouseX/((float)fWidth/xZoom)+(cX-xZoom/2));
-    float yCoor=(cY+yZoom/2)-(mouseY/((float)fHeight/yZoom));
-    ComplexNumber display=new ComplexNumber(xCoor, yCoor);
-    textAlign(CENTER, CENTER);
-    fill(0);
-    text("Coordinates: " + display, fWidth+(width-fWidth)/2, 9*height/10);
-  }
+  stroke(0);
+  line(fWidth, 190, width, 190);
+  
+  noStroke();
   fill(200);
-  rect(fWidth+(width-fWidth)/2, 230+(height-fHeight)/2, width-fWidth-20, 50);
+  rect(fWidth+(width-fWidth)/2, 230+(height-fHeight)/2, width-fWidth-1, 50);
   fill(0);
-  text("Complex Number to Generate Fractal\nReal & Imaginary Components:", fWidth+(width-fWidth)/2, 230+(height-fHeight)/2);
+  text("Complex Number to Generate Fractal\nReal & Imaginary Components:", fWidth+(width-fWidth)/2, 230);
   fill(255);
   noStroke();
   rect(fWidth+(width-fWidth)/2, 405, 100, 50);
@@ -98,6 +105,38 @@ void draw() {
     rect(fWidth+(width-fWidth)/2, 405, 100, 50);
     fill(255);
     text("Enter", fWidth+(width-fWidth)/2, 405);
+  }
+  
+  noStroke();
+  fill(200);
+  rect(fWidth+(width-fWidth)/2, 470, width-fWidth-1, 50);
+  fill(0);
+  text("Number of Iterations:", fWidth+(width-fWidth)/2, 470);
+  stroke(0);
+  line(fWidth, 450, width, 450);
+  fill(255);
+  noStroke();
+  rect(fWidth+(width-fWidth)/2, 565, 100, 50);
+  fill(0);
+  text("Enter", fWidth+(width-fWidth)/2, 565);
+  if (mouseX>1075 && mouseX<1175 && mouseY>540 && mouseY<590) {
+    fill(0);
+    rect(fWidth+(width-fWidth)/2, 565, 100, 50);
+    fill(255);
+    text("Enter", fWidth+(width-fWidth)/2, 565);
+  }
+  stroke(0);
+  line(fWidth, 632.5, width, 632.5);
+  if (mouseX<1000 && mouseY<750) {//display coordinates
+    noStroke();
+    fill(200);
+    rect(fWidth+(width-fWidth)/2, 9*height/10, width-fWidth-20, 50);
+    float xCoor=(mouseX/((float)fWidth/xZoom)+(cX-xZoom/2));
+    float yCoor=(cY+yZoom/2)-(mouseY/((float)fHeight/yZoom));
+    ComplexNumber display=new ComplexNumber(xCoor, yCoor);
+    textAlign(CENTER, CENTER);
+    fill(0);
+    text("Coordinates: " + display, fWidth+(width-fWidth)/2, 9*height/10);
   }
 }
 
@@ -140,7 +179,7 @@ void mouseClicked() {
       if (clickCount%2==0) clickCount--;
     }
   }
-  if (mouseX>1075 && mouseX<1175 && mouseY>380 && mouseY<430) {//Enter button
+  if (mouseX>1075 && mouseX<1175 && mouseY>380 && mouseY<430) {//Enter button for complex number to generate a julia set
     if (clickCount%2!=0) clickCount++;
     float realC=0;
     float imagC=0;
@@ -165,6 +204,18 @@ void mouseClicked() {
     julia.save("juliasets/fractals"+clickCount+".png");
     clickCount+=2;
     if (clickCount%2==0) clickCount--;
+  }
+  if (mouseX>1075 && mouseX<1175 && mouseY>540 && mouseY<590) {//Enter button for # of iterations
+    String iterText=null;
+    iterText=cp5.get(Textfield.class, "Number of Iterations:").getText();
+    if (iterText.length()>0 && iterText!=null) {
+      fIter=Integer.parseInt(iterText);
+      PImage iterPic;
+      if (clickCount%2==1) iterPic=drawJulia(fIter, fWidth, fHeight, juliaNum);
+      else iterPic=drawMand(fIter, fWidth, fHeight);
+      imageMode(CORNER);
+      image(iterPic, 0, 0);
+    }
   }
 }
 
