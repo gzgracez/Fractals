@@ -87,6 +87,48 @@ var drawMand = function(iter, mWidth, mHeight) {
   return mandelb;
 };
 
+var drawJuliaZoomed = function(iter, mWidth, mHeight, c, x1, y1, zoom1) {
+  xZoom*=zoom1;
+  yZoom*=zoom1;
+  var mandelb = createImage(mWidth, mHeight);
+  colorMode(HSB);
+  mandelb.loadPixels();
+  for (var h = 0.0; h < 4.0 * mandelb.height; h += 4.0) {
+    for (var w = 0.0; w < 4.0 * mandelb.width; w += 4.0) {
+      var a = new ComplexNumber((w / 4.0) / (mandelb.width / xZoom) + (x1-xZoom/2), (y1+yZoom/2) - ((h / 4.0) / (mandelb.height / yZoom)));
+      //mandelb.pixels[h*mandelb.width+w]=color(mandelbrot(zero, a, 0, iter), iter*0.75, iter);
+      var color1 = color(map(mandelbrot(a, c, 0, iter), 0, iter, 0, 255), 191, 255);
+      mandelb.pixels[h * mandelb.width + w] = red(color1);
+      mandelb.pixels[h * mandelb.width + w + 1] = green(color1);
+      mandelb.pixels[h * mandelb.width + w + 2] = blue(color1);
+      mandelb.pixels[h * mandelb.width + w + 3] = 255;
+    }
+  }
+  mandelb.updatePixels();
+  return mandelb;
+};
+
+var drawMandZoomed = function(iter, mWidth, mHeight, x1, y1, zoom1) {
+  xZoom*=zoom1;
+  yZoom*=zoom1;
+  var mandelb = createImage(mWidth, mHeight);
+  colorMode(HSB);
+  mandelb.loadPixels();
+  for (var h = 0.0; h < 4.0 * mandelb.height; h += 4.0) {
+    for (var w = 0.0; w < 4.0 * mandelb.width; w += 4.0) {
+      var a = new ComplexNumber((w / 4.0) / (mandelb.width / xZoom) +(x1-xZoom/2.0), (y1+yZoom/2) - ((h / 4.0) / (mandelb.height / yZoom)));
+      //mandelb.pixels[h*mandelb.width+w]=color(mandelbrot(zero, a, 0, iter), iter*0.75, iter);
+      var color1 = color(map(mandelbrot(zero, a, 0, iter), 0, iter, 0, 255), 191, 255);
+      mandelb.pixels[h * mandelb.width + w] = red(color1);
+      mandelb.pixels[h * mandelb.width + w + 1] = green(color1);
+      mandelb.pixels[h * mandelb.width + w + 2] = blue(color1);
+      mandelb.pixels[h * mandelb.width + w + 3] = 255;
+    }
+  }
+  mandelb.updatePixels();
+  return mandelb;
+};
+
 var mandelbrot = function(prev, orig, iter, maxI) {
   var next = orig.add(prev.square());
   if (iter >= maxI) return maxI;
@@ -201,49 +243,6 @@ function ComplexNumber(a, b) {
 
 }
 
-/*var HSBtoRGB = function(h, s, b) {
-  var c = (1 - Math.abs(2 * b - 1)) * s;
-  var x = c * (1 - Math.abs((h / 60) % 2 - 1));
-  var m = b - (c / 2);
-  var test = h / 60.0;
-  var r;
-  var g;
-  var B;
-  switch (true) {
-    case test < 1:
-      r = c + m;
-      g = x + m;
-      B = m;
-      break;
-    case test < 2:
-      r = x + m;
-      g = c + m;
-      B = m;
-      break;
-    case test < 3:
-      r = m;
-      g = c + m;
-      B = x + m;
-      break;
-    case test < 4:
-      r = m;
-      g = x + m;
-      B = c + m;
-      break;
-    case test < 5:
-      r = x + m;
-      g = m;
-      B = c + m;
-      break;
-    case test < 6:
-      r = c + m;
-      g = m;
-      B = x + m;
-      break;
-  }
-  return [r, g, B];
-};*/
-
 function mouseClicked() {
   if (mouseX > 0 && mouseX < fWidth && mouseY > 0 && mouseY < fHeight) {
     if (clickCount % 2 === 0) { //julia set
@@ -273,6 +272,27 @@ function mouseClicked() {
   }
 }
 
+function keyReleased() {
+  var zoomed;
+  if (key === 'z' || key === 'Z' || keyCode===RIGHT_ARROW || keyCode===UP_ARROW) {
+    cX=(mouseX/(fWidth/xZoom)+(cX-xZoom/2));
+    cY=(cY+yZoom/2)-(mouseY/(fHeight/yZoom));
+    if (clickCount%2===1) {
+      zoomed=drawJuliaZoomed(fIter, fWidth, fHeight, juliaNum, cX, cY, zoom);
+    } 
+    else zoomed=drawMandZoomed(fIter, fWidth, fHeight, cX, cY, zoom);
+    imageMode(CORNER);
+    image(zoomed, 0, 0);
+  } else if (key === 'x' || key === 'X' || keyCode===LEFT_ARROW || keyCode===DOWN_ARROW) {
+    cX=(mouseX/(fWidth/xZoom)+(cX-xZoom/2));
+    cY=(cY+yZoom/2)-(mouseY/(fHeight/yZoom));
+    if (clickCount%2==1) zoomed=drawJuliaZoomed(fIter, fWidth, fHeight, juliaNum, cX, cY, zoomOut); 
+    else zoomed=drawMandZoomed(fIter, fWidth, fHeight, cX, cY, zoom);
+    imageMode(CORNER);
+    image(zoomed, 0, 0);
+  }
+}
+
 function numCheck() {
   if (iterSlider.value() != fIter) {
     text.remove();
@@ -286,9 +306,3 @@ function numCheck() {
     image(iterPic, 0, 0);
   }
 }
-
-
-/*function myFunction() {
-  var e = document.getElementById("menu1");
-  potential = e.options[e.selectedIndex].value;
-}*/
