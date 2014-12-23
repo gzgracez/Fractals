@@ -54,7 +54,9 @@ var drawJulia = function(iter, mWidth, mHeight, c) {
     for (var w = 0.0; w < 4.0 * mandelb.width; w += 4.0) {
       var a = new ComplexNumber((w / 4.0) / (mandelb.width / 4.0) - 2.0, 1.5 - ((h / 4.0) / (mandelb.height / 3.0)));
       //mandelb.pixels[h*mandelb.width+w]=color(mandelbrot(zero, a, 0, iter), iter*0.75, iter);
-      var color1 = color(map(mandelbrot(a, c, 0, iter), 0, iter, 0, 255), 191, 255);
+      var color1;
+      if (mandelbrot(a, c, 0, iter)==iter) color1=color(0);
+      else color1 = color(map(mandelbrot(a, c, 0, iter), 0, iter, 0, 255), 191, 255);
       mandelb.pixels[h * mandelb.width + w] = red(color1);
       mandelb.pixels[h * mandelb.width + w + 1] = green(color1);
       mandelb.pixels[h * mandelb.width + w + 2] = blue(color1);
@@ -73,7 +75,9 @@ var drawMand = function(iter, mWidth, mHeight) {
     for (var w = 0.0; w < 4.0 * mandelb.width; w += 4.0) {
       var a = new ComplexNumber((w / 4.0) / (mandelb.width / 4.0) - 2.0, 1.5 - ((h / 4.0) / (mandelb.height / 3.0)));
       //mandelb.pixels[h*mandelb.width+w]=color(mandelbrot(zero, a, 0, iter), iter*0.75, iter);
-      var color1 = color(map(mandelbrot(zero, a, 0, iter), 0, iter, 0, 255), 191, 255);
+      var color1;
+      if (mandelbrot(zero, a, 0, iter)===iter) color1=color(0);
+      else color1 = color(map(mandelbrot(zero, a, 0, iter), 0, iter, 0, 255), 191, 255);
       mandelb.pixels[h * mandelb.width + w] = red(color1);
       mandelb.pixels[h * mandelb.width + w + 1] = green(color1);
       mandelb.pixels[h * mandelb.width + w + 2] = blue(color1);
@@ -94,7 +98,9 @@ var drawJuliaZoomed = function(iter, mWidth, mHeight, c, x1, y1, zoom1) {
     for (var w = 0.0; w < 4.0 * mandelb.width; w += 4.0) {
       var a = new ComplexNumber((w / 4.0) / (mandelb.width / xZoom) + (x1 - xZoom / 2), (y1 + yZoom / 2) - ((h / 4.0) / (mandelb.height / yZoom)));
       //mandelb.pixels[h*mandelb.width+w]=color(mandelbrot(zero, a, 0, iter), iter*0.75, iter);
-      var color1 = color(map(mandelbrot(a, c, 0, iter), 0, iter, 0, 255), 191, 255);
+      var color1;
+      if (mandelbrot(a, c, 0, iter)===iter) color1=color(0);
+      else color1 = color(map(mandelbrot(a, c, 0, iter), 0, iter, 0, 255), 191, 255);
       mandelb.pixels[h * mandelb.width + w] = red(color1);
       mandelb.pixels[h * mandelb.width + w + 1] = green(color1);
       mandelb.pixels[h * mandelb.width + w + 2] = blue(color1);
@@ -115,7 +121,9 @@ var drawMandZoomed = function(iter, mWidth, mHeight, x1, y1, zoom1) {
     for (var w = 0.0; w < 4.0 * mandelb.width; w += 4.0) {
       var a = new ComplexNumber((w / 4.0) / (mandelb.width / xZoom) + (x1 - xZoom / 2.0), (y1 + yZoom / 2) - ((h / 4.0) / (mandelb.height / yZoom)));
       //mandelb.pixels[h*mandelb.width+w]=color(mandelbrot(zero, a, 0, iter), iter*0.75, iter);
-      var color1 = color(map(mandelbrot(zero, a, 0, iter), 0, iter, 0, 255), 191, 255);
+      var color1;
+      if (mandelbrot(zero, a, 0, iter)===iter) color1=color(0);
+      else color1 = color(map(mandelbrot(zero, a, 0, iter), 0, iter, 0, 255), 191, 255);
       mandelb.pixels[h * mandelb.width + w] = red(color1);
       mandelb.pixels[h * mandelb.width + w + 1] = green(color1);
       mandelb.pixels[h * mandelb.width + w + 2] = blue(color1);
