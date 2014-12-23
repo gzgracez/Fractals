@@ -5,10 +5,10 @@
  -Previous Fractals Button: Allows the user to cycle through previous Julia Sets that he/she had generated
  -Uses ControlP5 to add textfields that allow the user to enter the a complex number (its real & imaginary components)
  and generates a Julia Set from this complex number
-   -The textfield is restricted so that the user can only enter floats
-   -If no number is entered, the number is assumed to be zero
+ -The textfield is restricted so that the user can only enter floats
+ -If no number is entered, the number is assumed to be zero
  -Uses ControlP5 to add textfields that allow the user to enter the desired number of iterations
-   -Immediately shows effect (in the image of the fractal) when number of iterations is changed
+ -Immediately shows effect (in the image of the fractal) when number of iterations is changed
  -Previously generated Julia Sets are saved as .png files in the folder named "juliasets"
  -Button colors invert when mouse hovers over them
  -Coordinates only print out when mouse is in the area of the fractal image
@@ -89,7 +89,7 @@ void draw() {
   } 
   stroke(0);
   line(fWidth, 190, width, 190);
-  
+
   noStroke();
   fill(200);
   rect(fWidth+(width-fWidth)/2, 230+(height-fHeight)/2, width-fWidth-1, 50);
@@ -106,7 +106,7 @@ void draw() {
     fill(255);
     text("Enter", fWidth+(width-fWidth)/2, 405);
   }
-  
+
   noStroke();
   fill(200);
   rect(fWidth+(width-fWidth)/2, 470, width-fWidth-1, 50);
@@ -263,7 +263,7 @@ PImage drawMand(int iter, int mWidth, int mHeight) {
       ComplexNumber a=new ComplexNumber(w/(float)(mandelb.width/4)-2, 1.5-(h/(float)(mandelb.height/3)));
       if (mandelbrot(zero, a, 0, iter)==iter) mandelb.pixels[h*mandelb.width+w]=color(0);
       //else mandelb.pixels[h*mandelb.width+w]=color(map(mandelbrot(zero, a, 0, iter),0,10,0,iter), iter*.75, iter);
-      else mandelb.pixels[h*mandelb.width+w]=color(mandelbrot(zero, a, 0, iter), iter*.75, iter);
+      else mandelb.pixels[h*mandelb.width+w]=color(map(mandelbrot(zero, a, 0, iter)%15, 0, 15, 0, iter), iter*.75, iter);
     }
   }
   mandelb.updatePixels();
@@ -278,7 +278,7 @@ PImage drawJulia(int iter, int mWidth, int mHeight, ComplexNumber c) {
     for (int w=0; w<mandelb.width; w++) {
       ComplexNumber a=new ComplexNumber(w/(float)(mandelb.width/4)-2, 1.5-(h/(float)(mandelb.height/3)));
       if (mandelbrot(a, c, 0, iter)==iter)mandelb.pixels[h*mandelb.width+w]=color(0);
-      else mandelb.pixels[h*mandelb.width+w]=color(mandelbrot(a, c, 0, iter), iter*.75, iter);
+      else mandelb.pixels[h*mandelb.width+w]=color(map(mandelbrot(a, c, 0, iter)%15, 0, 15, 0, iter), iter*.75, iter);
       //mandelb.pixels[h*mandelb.width+w]=color(mandelbrot(a, c, 0, iter), iter*.75, iter);
     }
   }
@@ -297,7 +297,7 @@ PImage drawMandelbrotZoomed(int iter, int mWidth, int mHeight, float x1, float y
     for (int w=0; w<mandelb.width; w++) {
       ComplexNumber a=new ComplexNumber(w/(float)(mandelb.width/xZoom)+(x1-xZoom/2), (y1+yZoom/2)-(h/(float)(mandelb.height/yZoom)));
       if (mandelbrot(zero, a, 0, iter)==iter) mandelb.pixels[h*mandelb.width+w]=color(0);
-      else mandelb.pixels[h*mandelb.width+w]=color(mandelbrot(zero, a, 0, iter), iter*.75, iter);
+      else mandelb.pixels[h*mandelb.width+w]=color(map(mandelbrot(zero, a, 0, iter)%15, 0, 15, 0, iter), iter*.75, iter);
       //mandelb.pixels[h*mandelb.width+w]=color(mandelbrot(zero, a, 0, iter), iter*.75, iter);
     }
   }
@@ -315,7 +315,7 @@ PImage drawJuliaZoomed(int iter, int mWidth, int mHeight, ComplexNumber c, float
     for (int w=0; w<mandelb.width; w++) {
       ComplexNumber a=new ComplexNumber(w/(float)(mandelb.width/xZoom)+(x1-xZoom/2), (y1+yZoom/2)-(h/(float)(mandelb.height/yZoom)));
       if (mandelbrot(a, c, 0, iter)==iter)mandelb.pixels[h*mandelb.width+w]=color(0);
-      else mandelb.pixels[h*mandelb.width+w]=color(mandelbrot(a, c, 0, iter), iter*.75, iter);
+      else mandelb.pixels[h*mandelb.width+w]=color(map(mandelbrot(a, c, 0, iter)%15, 0, 15, 0, iter), iter*.75, iter);
       //mandelb.pixels[h*mandelb.width+w]=color(mandelbrot(a, c, 0, iter), iter*.75, iter);
     }
   }
