@@ -123,7 +123,7 @@ public class ComplexNumber {
 	public ComplexNumber divide (ComplexNumber c) {
 		if ((c.getReal()+c.getImag())==0) {
 			ComplexNumber d=new ComplexNumber(a,b);
-			System.out.println("Not valid; returning the dividend");
+			System.out.println("Not valid; dividing by zero; returning the dividend");
 			return d;
 		}
 		double denom=(c.getReal()*c.getReal())+(c.getImag()*c.getImag());
@@ -205,9 +205,13 @@ public class ComplexNumber {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		ComplexNumber c = new ComplexNumber(1,2);
+		/*ComplexNumber c = new ComplexNumber(1,2);
 		ComplexNumber d = new ComplexNumber(0,0);
 		ComplexNumber e = c.divide(d);
+		System.out.println(e);*/
+		ComplexNumber c = new ComplexNumber(1,2);
+		ComplexNumber d = new ComplexNumber(2,3);
+		ComplexNumber e = c.power(5);
 		System.out.println(e);
 	}
 
