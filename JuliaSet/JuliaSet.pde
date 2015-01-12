@@ -10,6 +10,7 @@
  -Uses ControlP5 to add textfields that allow the user to enter the desired number of iterations
  -Immediately shows effect (in the image of the fractal) when number of iterations is changed
  -Previously generated Julia Sets are saved as .png files in the folder named "juliasets"
+ -Uses relative coordinates
  -Button colors invert when mouse hovers over them
  -Coordinates only print out when mouse is in the area of the fractal image
  */
@@ -24,14 +25,16 @@ float xZoom=4;//x width of coordinate plane
 float yZoom=3;// y width of coordinate plane
 float cX=0, cY=0;//center coordinates
 int currentSet=0; //0-mandelbrot
-int fWidth=1000;
-int fHeight=750;
+int w=1100;
+int h=int(.6*w);
+int fWidth=int(w*.8);
+int fHeight=h;
 int picNum=0;//for previous julia sets
 //int gifCount=0;
 ComplexNumber juliaNum=new ComplexNumber(0, 0);
 
 void setup() {
-  size(1250, 750);
+  size(w, h);
   imageMode(CORNER);
   PImage mFractal=drawMand(fIter, fWidth, fHeight);
   image(mFractal, 0, 0);
@@ -43,18 +46,19 @@ void setup() {
   PFont font = createFont("arial", 20);
   cp5 = new ControlP5(this);
   cp5.addTextfield("Real Component")
-    .setPosition(fWidth+(width-fWidth-100)/2, 250)
-      .setSize(100, 40)
+    .setPosition(fWidth+(width-fWidth-(0.08*width))/2, (3*height)/9)
+      .setSize(int(0.08*width), int((4*height)/75))
         .setFont(font)
           .setFocus(true)
             .setColor(color(255, 0, 0))
+              //.setColorBackground(color(255))
               .setAutoClear(false)
                 .setText("0")
                   .setInputFilter(2)
                     ;
   cp5.addTextfield("Imaginary Component")
-    .setPosition(fWidth+(width-fWidth-100)/2, 320)
-      .setSize(100, 40)
+    .setPosition(fWidth+(width-fWidth-(0.08*width))/2, (32*height)/75)
+      .setSize(int(0.08*width), int((4*height)/75))
         .setFont(font)
           .setColor(color(255, 0, 0))
             .setAutoClear(false)
@@ -62,75 +66,84 @@ void setup() {
                 .setInputFilter(2)
                   ;
   cp5.addTextfield("Number of Iterations:")
-    .setPosition(fWidth+(width-fWidth-100)/2, 480)
-      .setSize(100, 40)
+    .setPosition(fWidth+(width-fWidth-(0.08*width))/2, (48*height)/75)
+      .setSize(int(0.08*width), int((4*height)/75))
         .setFont(font)
           .setColor(color(255, 0, 0))
             .setAutoClear(false)
               .setText("50")
                 .setInputFilter(1)
                   ;
+
+  /*  cp5.addButton("Previous Fractals")
+   .setValue(0)
+   .setPosition(fWidth+(width-fWidth)/2, height*0.08)
+   .setSize(int(width*0.16), int(width*0.08))
+   ;
+   */
 }
 
 void draw() {
+  if (width<1100) textSize(8);
+  textAlign(CENTER, CENTER);
   colorMode(RGB, 255);
   rectMode(CENTER);
   noStroke();
   fill(255);
-  rect(fWidth+(width-fWidth)/2, 100, 200, 100);//previous fractals button
+  rect(fWidth+(width-fWidth)/2, (height*2)/15, width*0.16, (height*2)/15);//previous fractals button
   fill(0);
-  text("Previous Fractals", fWidth+(width-fWidth)/2, 100);
-  if (mouseX>1025 && mouseX<1225 && mouseY>50 && mouseY<150) {
+  text("Previous Fractals", fWidth+(width-fWidth)/2, (height*2)/15);
+  if (mouseX>((fWidth+(width-fWidth)/2)-(width*0.08)) && mouseX<((fWidth+(width-fWidth)/2)+(width*0.08)) && mouseY>(((height*2)/15)-((height*2)/30)) && mouseY<(((height*2)/15)+((height*2)/30))) {
     noStroke();
     fill(0);
-    rect(fWidth+(width-fWidth)/2, 100, 200, 100);
+    rect(fWidth+(width-fWidth)/2, (height*2)/15, int(width*0.16), int((height*2)/15));
     fill(255);
-    text("Previous Fractals", fWidth+(width-fWidth)/2, 100);
+    text("Previous Fractals", fWidth+(width-fWidth)/2, (height*2)/15);
   } 
   stroke(0);
-  line(fWidth, 190, width, 190);
+  line(fWidth, (19*height)/75, width, (19*height)/75);
 
   noStroke();
   fill(200);
-  rect(fWidth+(width-fWidth)/2, 230+(height-fHeight)/2, width-fWidth-1, 50);
+  rect(fWidth+(width-fWidth)/2, (0.184*width)+(height-fHeight)/2, width-fWidth-1, height/15);//gray space
   fill(0);
-  text("Complex Number to Generate Fractal\nReal & Imaginary Components:", fWidth+(width-fWidth)/2, 230);
+  text("Complex Number to Generate Fractal\nReal & Imaginary Components:", fWidth+(width-fWidth)/2, (0.184*width));
   fill(255);
   noStroke();
-  rect(fWidth+(width-fWidth)/2, 405, 100, 50);
+  rect(fWidth+(width-fWidth)/2, 0.54*height, 0.08*width, height/15);//enter button for complex number
   fill(0);
-  text("Enter", fWidth+(width-fWidth)/2, 405);
-  if (mouseX>1075 && mouseX<1175 && mouseY>380 && mouseY<430) {
+  text("Enter", fWidth+(width-fWidth)/2, 0.54*height);
+  if (mouseX>(fWidth+(width-fWidth)/2-0.04*width) && mouseX<(fWidth+(width-fWidth)/2+0.04*width) && mouseY>((0.54*height)-height/30) && mouseY<((0.54*height)+height/30)) {
     fill(0);
-    rect(fWidth+(width-fWidth)/2, 405, 100, 50);
+    rect(fWidth+(width-fWidth)/2, 0.54*height, 0.08*width, height/15);
     fill(255);
-    text("Enter", fWidth+(width-fWidth)/2, 405);
+    text("Enter", fWidth+(width-fWidth)/2, 0.54*height);
   }
 
   noStroke();
   fill(200);
-  rect(fWidth+(width-fWidth)/2, 470, width-fWidth-1, 50);
+  rect(fWidth+(width-fWidth)/2, (47*height)/75, width-fWidth-1, height/15);
   fill(0);
-  text("Number of Iterations:", fWidth+(width-fWidth)/2, 470);
+  text("Number of Iterations:", fWidth+(width-fWidth)/2, (47*height)/75);
   stroke(0);
-  line(fWidth, 450, width, 450);
+  line(fWidth, 0.6*height, width, 0.6*height);
   fill(255);
   noStroke();
-  rect(fWidth+(width-fWidth)/2, 565, 100, 50);
+  rect(fWidth+(width-fWidth)/2, (113*height)/150, 0.08*width, height/15);
   fill(0);
-  text("Enter", fWidth+(width-fWidth)/2, 565);
-  if (mouseX>1075 && mouseX<1175 && mouseY>540 && mouseY<590) {
+  text("Enter", fWidth+(width-fWidth)/2, (113*height)/150);
+  if (mouseX>((fWidth+(width-fWidth)/2)-0.04*width) && mouseX<((fWidth+(width-fWidth)/2)+0.04*width) && mouseY>(((113*height)/150)-height/30) && mouseY<(((113*height)/150)+height/30)) {
     fill(0);
-    rect(fWidth+(width-fWidth)/2, 565, 100, 50);
+    rect(fWidth+(width-fWidth)/2, (113*height)/150, 0.08*width, height/15);
     fill(255);
-    text("Enter", fWidth+(width-fWidth)/2, 565);
+    text("Enter", fWidth+(width-fWidth)/2, (113*height)/150);
   }
   stroke(0);
-  line(fWidth, 632.5, width, 632.5);
-  if (mouseX<1000 && mouseY<750) {//display coordinates
+  line(fWidth, (253*height)/300, width, (253*height)/300);
+  if (mouseX<fWidth && mouseY<height) {//display coordinates
     noStroke();
     fill(200);
-    rect(fWidth+(width-fWidth)/2, 9*height/10, width-fWidth-20, 50);
+    rect(fWidth+(width-fWidth)/2, 9*height/10, width-fWidth-20, height/15);
     float xCoor=(mouseX/((float)fWidth/xZoom)+(cX-xZoom/2));
     float yCoor=(cY+yZoom/2)-(mouseY/((float)fHeight/yZoom));
     ComplexNumber display=new ComplexNumber(xCoor, yCoor);
@@ -142,7 +155,7 @@ void draw() {
 
 void mouseClicked() {
   PImage prevFractal;
-  if (mouseX<1000 && mouseY<750) {//clicking the fractal screen
+  if (mouseX<fWidth && mouseY<height) {//clicking the fractal screen
     if (clickCount%2==0) {//julia set
       currentSet=1;
       cX=0;
@@ -157,7 +170,8 @@ void mouseClicked() {
       imageMode(CORNER);
       image(julia, 0, 0);
       julia.save("juliasets/fractals"+clickCount+".png");
-    } else {//mandelbrot set
+    } 
+    else {//mandelbrot set
       currentSet=0;
       cX=0;
       cY=0;
@@ -169,7 +183,7 @@ void mouseClicked() {
     }
     clickCount++;
   }
-  if (mouseX>1025 && mouseX<1225 && mouseY>50 && mouseY<150) {//previous fractal
+  if (mouseX>((fWidth+(width-fWidth)/2)-(width*0.08)) && mouseX<((fWidth+(width-fWidth)/2)+(width*0.08)) && mouseY>(((height*2)/15)-((height*2)/30)) && mouseY<(((height*2)/15)+((height*2)/30))) {//previous fractal
     if (clickCount>0) {
       if (picNum>=clickCount) picNum=0;
       prevFractal=loadImage("juliasets/fractals"+picNum+".png");
@@ -179,7 +193,7 @@ void mouseClicked() {
       if (clickCount%2==0) clickCount--;
     }
   }
-  if (mouseX>1075 && mouseX<1175 && mouseY>380 && mouseY<430) {//Enter button for complex number to generate a julia set
+  if (mouseX>(fWidth+(width-fWidth)/2-0.04*width) && mouseX<(fWidth+(width-fWidth)/2+0.04*width) && mouseY>((0.54*height)-height/30) && mouseY<((0.54*height)+height/30)) {//Enter button for complex number to generate a julia set
     if (clickCount%2!=0) clickCount++;
     float realC=0;
     float imagC=0;
@@ -205,7 +219,7 @@ void mouseClicked() {
     clickCount+=2;
     if (clickCount%2==0) clickCount--;
   }
-  if (mouseX>1075 && mouseX<1175 && mouseY>540 && mouseY<590) {//Enter button for # of iterations
+  if (mouseX>((fWidth+(width-fWidth)/2)-0.04*width) && mouseX<((fWidth+(width-fWidth)/2)+0.04*width) && mouseY>(((113*height)/150)-height/30) && mouseY<(((113*height)/150)+height/30)) {//Enter button for # of iterations
     String iterText=null;
     iterText=cp5.get(Textfield.class, "Number of Iterations:").getText();
     if (iterText.length()>0 && iterText!=null) {
@@ -220,24 +234,28 @@ void mouseClicked() {
 }
 
 void keyReleased() {
-  PImage zoomed;
-  if (key == 'z' || key == 'Z' || keyCode==RIGHT || keyCode==UP) {
-    cX=(mouseX/((float)fWidth/xZoom)+(cX-xZoom/2));
-    cY=(cY+yZoom/2)-(mouseY/((float)fHeight/yZoom));
-    if (clickCount%2==1) {
-      zoomed=drawJuliaZoomed(fIter, fWidth, fHeight, juliaNum, cX, cY, zoom);
-      //saveFrame("fractals"+gifCount+".gif");
-      //gifCount++;
-    } else zoomed=drawMandelbrotZoomed(fIter, fWidth, fHeight, cX, cY, zoom);
-    imageMode(CORNER);
-    image(zoomed, 0, 0);
-  } else if (key == 'x' || key == 'X' || keyCode==LEFT || keyCode==DOWN) {
-    cX=(mouseX/((float)fWidth/xZoom)+(cX-xZoom/2));
-    cY=(cY+yZoom/2)-(mouseY/((float)fHeight/yZoom));
-    if (clickCount%2==1) zoomed=drawJuliaZoomed(fIter, fWidth, fHeight, juliaNum, cX, cY, zoomOut); 
-    else zoomed=drawMandelbrotZoomed(fIter, fWidth, fHeight, cX, cY, zoomOut);
-    imageMode(CORNER);
-    image(zoomed, 0, 0);
+  if (mouseX<fWidth && mouseY<height) {
+    PImage zoomed;
+    if (key == 'z' || key == 'Z' || keyCode==RIGHT || keyCode==UP) {
+      cX=(mouseX/((float)fWidth/xZoom)+(cX-xZoom/2));
+      cY=(cY+yZoom/2)-(mouseY/((float)fHeight/yZoom));
+      if (clickCount%2==1) {
+        zoomed=drawJuliaZoomed(fIter, fWidth, fHeight, juliaNum, cX, cY, zoom);
+        //saveFrame("fractals"+gifCount+".gif");
+        //gifCount++;
+      } 
+      else zoomed=drawMandelbrotZoomed(fIter, fWidth, fHeight, cX, cY, zoom);
+      imageMode(CORNER);
+      image(zoomed, 0, 0);
+    } 
+    else if (key == 'x' || key == 'X' || keyCode==LEFT || keyCode==DOWN) {
+      cX=(mouseX/((float)fWidth/xZoom)+(cX-xZoom/2));
+      cY=(cY+yZoom/2)-(mouseY/((float)fHeight/yZoom));
+      if (clickCount%2==1) zoomed=drawJuliaZoomed(fIter, fWidth, fHeight, juliaNum, cX, cY, zoomOut); 
+      else zoomed=drawMandelbrotZoomed(fIter, fWidth, fHeight, cX, cY, zoomOut);
+      imageMode(CORNER);
+      image(zoomed, 0, 0);
+    }
   }
 }
 
@@ -247,7 +265,8 @@ int mandelbrot(ComplexNumber prev, ComplexNumber orig, int iter, int maxI) {
   else {
     if (next.magnitude()>=2) {
       return iter+1;
-    } else {
+    } 
+    else {
       return mandelbrot(next, orig, iter+1, maxI);
     }
   }
@@ -326,12 +345,3 @@ PImage drawJuliaZoomed(int iter, int mWidth, int mHeight, ComplexNumber c, float
 public void clear() {
   cp5.get(Textfield.class, "textValue").clear();
 }
-
-/*void controlEvent(ControlEvent theEvent) {
- if (theEvent.isAssignableFrom(Textfield.class)) {
- println("controlEvent: accessing a string from controller '"
- +theEvent.getName()+"': "
- +theEvent.getStringValue()
- );
- }
- }*/
