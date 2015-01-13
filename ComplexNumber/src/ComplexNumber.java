@@ -192,7 +192,7 @@ public class ComplexNumber {
 	/**
 	 * This method compares the magnitude of two ComplexNumbers
 	 * @param c This is the ComplexNumber that the original ComplexNumber will be compared to
-	 * @return double This is -1 if the magnitude of the original complexnumber is less than c, 0 if it is equal, and 1 if it is greater
+	 * @return double This is the greater magnitude of the two ComplexNumbers
 	 */
 	public double comparesTo(Object c){
 		ComplexNumber that=(ComplexNumber)(c);
@@ -208,20 +208,35 @@ public class ComplexNumber {
 	 */
 	public static void main(String[] args) {
 		ComplexNumber c = new ComplexNumber(1,2);
+		ComplexNumber d = new ComplexNumber(4,7);
 		ComplexNumber zero = new ComplexNumber(0,0);
-		ComplexNumber orig = new ComplexNumber();
+		ComplexNumber z1 = new ComplexNumber(0,1);
+		ComplexNumber z2 = new ComplexNumber(0,-1);
+		ComplexNumber orig1 = new ComplexNumber();
+		ComplexNumber orig = new ComplexNumber(3.5,4.4);
+		ComplexNumber copy = new ComplexNumber(orig);
+		System.out.println(z1);
+		System.out.println(z2);
+		System.out.println(orig.getReal());
+		System.out.println(orig.getImag());
+		System.out.println(orig.add(d));
+		System.out.println(orig.subtract(d));
+		System.out.println(orig.multiply(d));
 		try{
 			ComplexNumber f = c.divide(zero);
 			System.out.println(f);
 		} catch (ArithmeticException e){
-			System.err.println("Caught ArithmeticException: " + e.getMessage());
+			System.out.println("Caught ArithmeticException: " + e.getMessage());
 		}
+		System.out.println(orig.equals(copy));
+		System.out.println(orig.magnitude());
 		try{
 			ComplexNumber f = c.power(-2);
 			System.out.println(f);
 		} catch (IllegalArgumentException e){
-			System.err.println("Caught IllegalArgumentException: " + e.getMessage());
+			System.out.println("Caught IllegalArgumentException: " + e.getMessage());
 		}
+		System.out.println(orig.square());
 		System.out.println(zero.comparesTo(c));
 		/*ComplexNumber c = new ComplexNumber(1,2);
 		ComplexNumber d = new ComplexNumber(2,3);
