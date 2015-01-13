@@ -14,10 +14,10 @@ public class ComplexNumber {
 	 * Creates a new ComplexNumber 2i
 	 */
 	public ComplexNumber() {
-		a = 0;
-		b = 2;
+		a = 2;
+		b = 3;
 	}
-	
+
 	/**
 	 * Creates a new ComplexNumber with a1+b1i
 	 * @param a1 This is the real component of the ComplexNumber
@@ -27,7 +27,7 @@ public class ComplexNumber {
 		a = a1;
 		b = b1;
 	}
-	
+
 	/**
 	 * The "copy constructor"
 	 * @param cN1 This is a ComplexNumber that gets copied
@@ -123,8 +123,7 @@ public class ComplexNumber {
 	public ComplexNumber divide (ComplexNumber c) {
 		if ((c.getReal()+c.getImag())==0) {
 			ComplexNumber d=new ComplexNumber(a,b);
-			System.out.println("Not valid; dividing by zero; returning the dividend");
-			return d;
+			throw new ArithmeticException("Cannot Divide By Zero");
 		}
 		double denom=(c.getReal()*c.getReal())+(c.getImag()*c.getImag());
 		double numReal=a*c.getReal()+(b*c.getImag());
@@ -170,6 +169,7 @@ public class ComplexNumber {
 	 * @return d This is the ComplexNumber that is returned when a ComplexNumber is raised to a power
 	 */
 	public ComplexNumber power(int exp){
+		if (exp<0) throw new IllegalArgumentException("Exponent Cannot Be Negative");
 		ComplexNumber d=new ComplexNumber(1,0);
 		ComplexNumber c=new ComplexNumber(a,b);
 		for (int i=0; i<exp; i++){
@@ -192,27 +192,41 @@ public class ComplexNumber {
 	/**
 	 * This method compares the magnitude of two ComplexNumbers
 	 * @param c This is the ComplexNumber that the original ComplexNumber will be compared to
-	 * @return double This is the greater magnitude of the two ComplexNumbers
+	 * @return double This is -1 if the magnitude of the original complexnumber is less than c, 0 if it is equal, and 1 if it is greater
 	 */
-	public double comparesTo(ComplexNumber c){
+	public double comparesTo(Object c){
+		ComplexNumber that=(ComplexNumber)(c);
 		double mag=Math.sqrt(a*a+b*b);
-		if (mag>=c.magnitude()) return mag;
-		else return c.magnitude();
+		if (mag==that.magnitude()) return 0;
+		if (mag>=that.magnitude()) return 1;
+		else return -1;
 	}
-	
+
 	/**
 	 * A tester method
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		/*ComplexNumber c = new ComplexNumber(1,2);
-		ComplexNumber d = new ComplexNumber(0,0);
-		ComplexNumber e = c.divide(d);
-		System.out.println(e);*/
 		ComplexNumber c = new ComplexNumber(1,2);
+		ComplexNumber zero = new ComplexNumber(0,0);
+		ComplexNumber orig = new ComplexNumber();
+		try{
+			ComplexNumber f = c.divide(zero);
+			System.out.println(f);
+		} catch (ArithmeticException e){
+			System.err.println("Caught ArithmeticException: " + e.getMessage());
+		}
+		try{
+			ComplexNumber f = c.power(-2);
+			System.out.println(f);
+		} catch (IllegalArgumentException e){
+			System.err.println("Caught IllegalArgumentException: " + e.getMessage());
+		}
+		System.out.println(zero.comparesTo(c));
+		/*ComplexNumber c = new ComplexNumber(1,2);
 		ComplexNumber d = new ComplexNumber(2,3);
 		ComplexNumber e = c.power(5);
-		System.out.println(e);
+		System.out.println(e);*/
 	}
 
 }
