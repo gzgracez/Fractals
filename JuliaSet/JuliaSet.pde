@@ -25,7 +25,7 @@ float xZoom=4;//x width of coordinate plane
 float yZoom=3;// y width of coordinate plane
 float cX=0, cY=0;//center coordinates
 int currentSet=0; //0-mandelbrot
-int w=1100;
+int w=800;
 int h=int(.6*w);
 int fWidth=int(w*.8);
 int fHeight=h;
@@ -34,6 +34,7 @@ int picNum=0;//for previous julia sets
 ComplexNumber juliaNum=new ComplexNumber(0, 0);
 
 void setup() {
+  frame.setResizable(true);
   size(w, h);
   imageMode(CORNER);
   PImage mFractal=drawMand(fIter, fWidth, fHeight);
@@ -74,21 +75,32 @@ void setup() {
               .setText("50")
                 .setInputFilter(1)
                   ;
-
   /*  cp5.addButton("Previous Fractals")
    .setValue(0)
    .setPosition(fWidth+(width-fWidth)/2, height*0.08)
    .setSize(int(width*0.16), int(width*0.08))
    ;
    */
+  color c = get(mouseX, mouseY);
+  float r=red(c);
+  float g=green(c);
+  float b=blue(c);
+  println(r + " " +  g + " " + b);
 }
 
 void draw() {
+  fWidth=int(width*.8);
+  fHeight=height;
   if (width<1100) textSize(8);
   textAlign(CENTER, CENTER);
   colorMode(RGB, 255);
+  rectMode(CORNER);
+  noStroke();
+  fill(204);
+  rect(fWidth, 0, width-fWidth, height);
   rectMode(CENTER);
   noStroke();
+  fill(204);
   fill(255);
   rect(fWidth+(width-fWidth)/2, (height*2)/15, width*0.16, (height*2)/15);//previous fractals button
   fill(0);
@@ -104,7 +116,7 @@ void draw() {
   line(fWidth, (19*height)/75, width, (19*height)/75);
 
   noStroke();
-  fill(200);
+  fill(204);
   rect(fWidth+(width-fWidth)/2, (0.184*width)+(height-fHeight)/2, width-fWidth-1, height/15);//gray space
   fill(0);
   text("Complex Number to Generate Fractal\nReal & Imaginary Components:", fWidth+(width-fWidth)/2, (0.184*width));
@@ -121,7 +133,7 @@ void draw() {
   }
 
   noStroke();
-  fill(200);
+  fill(204);
   rect(fWidth+(width-fWidth)/2, (47*height)/75, width-fWidth-1, height/15);
   fill(0);
   text("Number of Iterations:", fWidth+(width-fWidth)/2, (47*height)/75);
