@@ -11,7 +11,7 @@ public class ComplexNumber {
 
 	private double a, b;
 	/**
-	 * Creates a new ComplexNumber 2i
+	 * Default constructor - Creates a new ComplexNumber 2 + 3i
 	 */
 	public ComplexNumber() {
 		a = 2;
@@ -19,7 +19,7 @@ public class ComplexNumber {
 	}
 
 	/**
-	 * Creates a new ComplexNumber with a1+b1i
+	 * "Regular" constructor - Creates a new ComplexNumber a1+b1i
 	 * @param a1 This is the real component of the ComplexNumber
 	 * @param b1 This is the imaginary component of the ComplexNumber
 	 */
@@ -60,20 +60,24 @@ public class ComplexNumber {
 		String result = "";
 		if (a == 0) {
 			if (b < 0) {
-				result = b + "i";
+				if (b==-1) result= "-i";
+				else result = b + "i";
 			} else if (b == 0) {
 				result = "0.0";
 			} else {
-				result = b + "i";
+				if (b==1) result= "i";
+				else result = b + "i";
 			}
 		} 
 		else {
 			if (b < 0) {
-				result = a + " - " + Math.abs(b) + "i";
+				if (b==-1) result = a + " - "+ "i";
+				else result = a + " - " + Math.abs(b) + "i";
 			} else if (b == 0) {
 				result = a + "";
 			} else {
-				result = a + " + " + b + "i";
+				if (b==1) result= a + " + " + "i";
+				else result = a + " + " + b + "i";
 			}
 		}
 		return result;
@@ -122,7 +126,6 @@ public class ComplexNumber {
 	 */
 	public ComplexNumber divide (ComplexNumber c) {
 		if ((c.getReal()+c.getImag())==0) {
-			ComplexNumber d=new ComplexNumber(a,b);
 			throw new ArithmeticException("Cannot Divide By Zero");
 		}
 		double denom=(c.getReal()*c.getReal())+(c.getImag()*c.getImag());
@@ -133,40 +136,11 @@ public class ComplexNumber {
 		ComplexNumber d=new ComplexNumber(cReal,cImag);
 		return d;
 	}
-
-	/**
-	 * This method returns the conjugate of a ComplexNumber
-	 * @return d This is the conjugate of the original ComplexNumber
-	 */
-	public ComplexNumber conjugate(){
-		ComplexNumber d=new ComplexNumber(a,-1*b);
-		return d;
-	}
-
-	/**
-	 * This method checks if two ComplexNumbers are equal
-	 * @param c This is the ComplexNumber the original ComplexNumber should be checked against
-	 * @return boolean Returns whether the two ComplexNumbers are equal
-	 */
-	public boolean equals(ComplexNumber c){
-		if (a!=c.getReal())return false;
-		if (b!=c.getImag())return false;
-		return true;
-	}
-
-	/**
-	 * This method returns the magnitude of a ComplexNumber
-	 * @return d The magnitude of this ComplexNumber
-	 */
-	public double magnitude(){
-		double d=Math.sqrt(a*a+b*b);
-		return d;
-	}
-
+	
 	/**
 	 * This method raises a ComplexNumber to a power
 	 * @param exp This is the exponent the ComplexNumber should be raised to
-	 * @return d This is the ComplexNumber that is returned when a ComplexNumber is raised to a power
+	 * @return d This is the ComplexNumber that is returned when the ComplexNumber is raised to a powere
 	 */
 	public ComplexNumber power(int exp){
 		if (exp<0) throw new IllegalArgumentException("Exponent Cannot Be Negative");
@@ -190,9 +164,39 @@ public class ComplexNumber {
 	}
 
 	/**
+	 * This method returns the conjugate of a ComplexNumber
+	 * @return d This is the conjugate of the original ComplexNumber
+	 */
+	public ComplexNumber conjugate(){
+		ComplexNumber d=new ComplexNumber(a,-1*b);
+		return d;
+	}
+
+	/**
+	 * This method checks if two ComplexNumbers are equal
+	 * @param c This is the ComplexNumber the original ComplexNumber should be checked against
+	 * @return boolean Returns whether the two ComplexNumbers are equal
+	 */
+	public boolean equals(Object c){
+		ComplexNumber that=(ComplexNumber)(c);
+		if (a!=that.getReal())return false;
+		if (b!=that.getImag())return false;
+		return true;
+	}
+
+	/**
+	 * This method returns the magnitude of a ComplexNumber
+	 * @return d The magnitude of this ComplexNumber
+	 */
+	public double magnitude(){
+		double d=Math.sqrt(a*a+b*b);
+		return d;
+	}
+
+	/**
 	 * This method compares the magnitude of two ComplexNumbers
 	 * @param c This is the ComplexNumber that the original ComplexNumber will be compared to
-	 * @return double This is the greater magnitude of the two ComplexNumbers
+	 * @return double This returns 0.0 if the two ComplexNumbers are equal, -1.0 if the original ComplexNumber is less than the ComplexNumber c, and 1.0 if the original ComplexNumber is greater than the ComplexNumber c
 	 */
 	public double comparesTo(Object c){
 		ComplexNumber that=(ComplexNumber)(c);
@@ -209,39 +213,64 @@ public class ComplexNumber {
 	public static void main(String[] args) {
 		ComplexNumber c = new ComplexNumber(1,2);
 		ComplexNumber d = new ComplexNumber(4,7);
+		ComplexNumber defaultC = new ComplexNumber();
 		ComplexNumber zero = new ComplexNumber(0,0);
 		ComplexNumber z1 = new ComplexNumber(0,1);
 		ComplexNumber z2 = new ComplexNumber(0,-1);
-		ComplexNumber orig1 = new ComplexNumber();
-		ComplexNumber orig = new ComplexNumber(3.5,4.4);
+		ComplexNumber z3 = new ComplexNumber(1,0);
+		ComplexNumber z4 = new ComplexNumber(-1,0);
+		ComplexNumber z5 = new ComplexNumber(1,1);
+		ComplexNumber z6 = new ComplexNumber(1,-1);
+		ComplexNumber z7 = new ComplexNumber(-1,1);
+		ComplexNumber z8 = new ComplexNumber(-1,-1);
+		ComplexNumber z9 = new ComplexNumber(2,3);
+		ComplexNumber z10 = new ComplexNumber(2,-3);
+		ComplexNumber z11 = new ComplexNumber(-2,3);
+		ComplexNumber z12 = new ComplexNumber(-2,-3);
+		ComplexNumber orig = new ComplexNumber(-3,9);
 		ComplexNumber copy = new ComplexNumber(orig);
+		System.out.println(zero);
 		System.out.println(z1);
 		System.out.println(z2);
-		System.out.println(orig.getReal());
-		System.out.println(orig.getImag());
-		System.out.println(orig.add(d));
-		System.out.println(orig.subtract(d));
-		System.out.println(orig.multiply(d));
+		System.out.println(z3);
+		System.out.println(z4);
+		System.out.println(z5);
+		System.out.println(z6);
+		System.out.println(z7);
+		System.out.println(z8);
+		System.out.println(z9);
+		System.out.println(z10);
+		System.out.println(z11);
+		System.out.println(z12);
+		System.out.println("Default constructor: " + defaultC);
+		System.out.println("Regular constructor: " + orig);
+		System.out.println("Copy constructor: " + copy);
+		System.out.println("(" + orig + ").getReal() = " + orig.getReal());
+		System.out.println("(" + orig + ").getImag() = " + orig.getImag());
+		System.out.println("(" + orig + ").add(" + d + ") = " + orig.add(d));
+		System.out.println("(" + orig + ").subtract(" + d + ") = " + orig.subtract(d));
+		System.out.println("(" + orig + ").multiply(" + d + ") = " + orig.multiply(d));
+		System.out.println("(" + orig + ").divide(" + d + ") = " + orig.divide(d));
 		try{
 			ComplexNumber f = c.divide(zero);
 			System.out.println(f);
 		} catch (ArithmeticException e){
 			System.out.println("Caught ArithmeticException: " + e.getMessage());
 		}
-		System.out.println(orig.equals(copy));
-		System.out.println(orig.magnitude());
+		System.out.println("(" + orig + ").power(5) = " + orig.power(5));
 		try{
 			ComplexNumber f = c.power(-2);
 			System.out.println(f);
 		} catch (IllegalArgumentException e){
 			System.out.println("Caught IllegalArgumentException: " + e.getMessage());
 		}
-		System.out.println(orig.square());
-		System.out.println(zero.comparesTo(c));
-		/*ComplexNumber c = new ComplexNumber(1,2);
-		ComplexNumber d = new ComplexNumber(2,3);
-		ComplexNumber e = c.power(5);
-		System.out.println(e);*/
+		System.out.println("(" + orig + ").square() = " + orig.square());
+		System.out.println("(" + orig + ").equals(" + copy + ") = " + orig.equals(copy));
+		System.out.println("(" + orig + ").equals(" + d + ") = " + orig.equals(d));
+		System.out.println("(" + orig + ").magnitude() = " + orig.magnitude());
+		System.out.println("(" + orig + ").comparesTo(" + new ComplexNumber(3.5,9) + ") = " + orig.comparesTo(new ComplexNumber(3.5,9)));
+		System.out.println("(" + orig + ").comparesTo(" + new ComplexNumber(3,9) + ") = " + orig.comparesTo(new ComplexNumber(3,9)));
+		System.out.println("(" + orig + ").comparesTo(" + d + ") = " + orig.comparesTo(d));
 	}
 
 }
