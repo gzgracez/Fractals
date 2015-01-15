@@ -75,6 +75,7 @@ void setup() {
               .setText("50")
                 .setInputFilter(1)
                   ;
+
   /*  cp5.addButton("Previous Fractals")
    .setValue(0)
    .setPosition(fWidth+(width-fWidth)/2, height*0.08)
@@ -89,6 +90,13 @@ void setup() {
 }
 
 void draw() {
+  h=int(.6*width);
+  frame.setSize(width, h);
+  if (w!=width) {
+    PImage mFractal=drawMand(fIter, fWidth, fHeight);
+    image(mFractal, 0, 0);
+  }
+  w=width;
   fWidth=int(width*.8);
   fHeight=height;
   if (width<1100) textSize(8);
