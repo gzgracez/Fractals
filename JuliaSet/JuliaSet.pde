@@ -89,7 +89,6 @@ void setup() {
 }
 
 void draw() {
-<<<<<<< HEAD
   if (w!=width) {
     w=width;
     h=int(.6*width);
@@ -99,8 +98,7 @@ void draw() {
     image(mFractal, 0, 0);
   }
   println(w + "w, width" + width);
-=======
->>>>>>> FETCH_HEAD
+
   fWidth=int(width*.8);
   fHeight=height;
   if (width<1100) textSize(8);
@@ -194,8 +192,7 @@ void mouseClicked() {
       imageMode(CORNER);
       image(julia, 0, 0);
       julia.save("juliasets/fractals"+clickCount+".png");
-    } 
-    else {//mandelbrot set
+    } else {//mandelbrot set
       currentSet=0;
       cX=0;
       cY=0;
@@ -267,12 +264,10 @@ void keyReleased() {
         zoomed=drawJuliaZoomed(fIter, fWidth, fHeight, juliaNum, cX, cY, zoom);
         //saveFrame("fractals"+gifCount+".gif");
         //gifCount++;
-      } 
-      else zoomed=drawMandelbrotZoomed(fIter, fWidth, fHeight, cX, cY, zoom);
+      } else zoomed=drawMandelbrotZoomed(fIter, fWidth, fHeight, cX, cY, zoom);
       imageMode(CORNER);
       image(zoomed, 0, 0);
-    } 
-    else if (key == 'x' || key == 'X' || keyCode==LEFT || keyCode==DOWN) {
+    } else if (key == 'x' || key == 'X' || keyCode==LEFT || keyCode==DOWN) {
       cX=(mouseX/((float)fWidth/xZoom)+(cX-xZoom/2));
       cY=(cY+yZoom/2)-(mouseY/((float)fHeight/yZoom));
       if (clickCount%2==1) zoomed=drawJuliaZoomed(fIter, fWidth, fHeight, juliaNum, cX, cY, zoomOut); 
@@ -289,8 +284,7 @@ int mandelbrot(ComplexNumber prev, ComplexNumber orig, int iter, int maxI) {
   else {
     if (next.magnitude()>=2) {
       return iter+1;
-    } 
-    else {
+    } else {
       return mandelbrot(next, orig, iter+1, maxI);
     }
   }
