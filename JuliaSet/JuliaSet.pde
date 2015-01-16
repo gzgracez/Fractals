@@ -89,6 +89,18 @@ void setup() {
 }
 
 void draw() {
+<<<<<<< HEAD
+  if (w!=width) {
+    w=width;
+    h=int(.6*width);
+    frame.setSize(width, h);
+    println(w + "w, width" + width);
+    PImage mFractal=drawMand(fIter, fWidth, fHeight);
+    image(mFractal, 0, 0);
+  }
+  println(w + "w, width" + width);
+=======
+>>>>>>> FETCH_HEAD
   fWidth=int(width*.8);
   fHeight=height;
   if (width<1100) textSize(8);
