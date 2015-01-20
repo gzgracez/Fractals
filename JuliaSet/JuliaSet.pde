@@ -19,19 +19,22 @@ ControlP5 cp5;
 int fIter=50;//final number of iterations
 int clickCount=0;//number of times clicked
 PImage jBack;//juliaSet as background
-float zoom=0.9;//zoom factor
-float zoomOut=1.1;//zoom factor
-float xZoom=4;//x width of coordinate plane
-float yZoom=3;// y width of coordinate plane
+float zoom=0.9, zoomOut=1.1;//zoom factor
+float xZoom=4, yZoom=3;// x and y width of coordinate plane
 float cX=0, cY=0;//center coordinates
 int currentSet=0; //0-mandelbrot
 int w=800;
 int h=int(.6*w);
-int fWidth=int(w*.8);
-int fHeight=h;
+int fWidth=int(w*.8), fHeight=h;
 int picNum=0;//for previous julia sets
 //int gifCount=0;
 ComplexNumber juliaNum=new ComplexNumber(0, 0);
+Textfield tReal;
+Textfield tImag;
+Textfield tIter;
+RadioButton rColors;
+float jReal=0, jImag=0;
+int rColorScheme=2;
 
 void setup() {
   frame.setResizable(true);
@@ -46,58 +49,69 @@ void setup() {
   rect(fWidth+(width-fWidth)/2, height/2, width-fWidth, height);
   PFont font = createFont("arial", 20);
   cp5 = new ControlP5(this);
-  cp5.addTextfield("Real Component")
+  tReal = cp5.addTextfield("Real Component")
     .setPosition(fWidth+(width-fWidth-(0.08*width))/2, (3*height)/9)
       .setSize(int(0.08*width), int((4*height)/75))
         .setFont(font)
           .setFocus(true)
             .setColor(color(255, 0, 0))
-              //.setColorBackground(color(255))
-              .setAutoClear(false)
-                .setText("0")
-                  .setInputFilter(2)
-                    ;
-  cp5.addTextfield("Imaginary Component")
+              .setColorLabel(color(0))
+                //.setColorBackground(color(255))
+                .setAutoClear(false)
+                  .setText("0")
+                    .setInputFilter(3)
+                      ;
+  tImag = cp5.addTextfield("Imaginary Component")
     .setPosition(fWidth+(width-fWidth-(0.08*width))/2, (32*height)/75)
       .setSize(int(0.08*width), int((4*height)/75))
         .setFont(font)
           .setColor(color(255, 0, 0))
-            .setAutoClear(false)
-              .setText("0")
-                .setInputFilter(2)
-                  ;
-  cp5.addTextfield("Number of Iterations:")
+            .setColorLabel(color(0))
+              .setAutoClear(false)
+                .setText("0")
+                  .setInputFilter(3)
+                    ;
+  tIter = cp5.addTextfield("Number of Iterations")
     .setPosition(fWidth+(width-fWidth-(0.08*width))/2, (48*height)/75)
       .setSize(int(0.08*width), int((4*height)/75))
         .setFont(font)
           .setColor(color(255, 0, 0))
-            .setAutoClear(false)
-              .setText("50")
-                .setInputFilter(1)
-                  ;
+            .setColorLabel(color(0))
+              .setAutoClear(false)
+                .setText("50")
+                  .setInputFilter(1)
+                    ;
+  rColors = cp5.addRadioButton("Color Scheme")
+    .setPosition(20, 160)
+      .setSize(40, 20)
+        .setColorActive(color(255))
+          .setColorLabel(color(255))
+            .setItemsPerRow(5)
+              .setSpacingColumn(50)
+                .addItem("Grayscale", 1)
+                  .addItem("Orangeish", 2)
+                    .addItem("Colorful", 3)
+                      ;
+
   /*  cp5.addButton("Previous Fractals")
    .setValue(0)
    .setPosition(fWidth+(width-fWidth)/2, height*0.08)
    .setSize(int(width*0.16), int(width*0.08))
    ;
    */
-  color c = get(mouseX, mouseY);
-  float r=red(c);
-  float g=green(c);
-  float b=blue(c);
-  println(r + " " +  g + " " + b);
 }
 
 void draw() {
-  if (w!=width) {
-    w=width;
-    h=int(.6*width);
-    frame.setSize(width, h);
-    println(w + "w, width" + width);
-    PImage mFractal=drawMand(fIter, fWidth, fHeight);
-    image(mFractal, 0, 0);
-  }
-  println(w + "w, width" + width);
+  //println(tReal.getText());
+  //  if (w!=width) {
+  //    w=width;
+  //    h=int(.6*width);
+  //    frame.setSize(width, h);
+  //    println(w + "w, width" + width);
+  //    PImage mFractal=drawMand(fIter, fWidth, fHeight);
+  //    image(mFractal, 0, 0);
+  //  }
+  //  println(w + "w, width" + width);
 
   fWidth=int(width*.8);
   fHeight=height;
@@ -164,7 +178,7 @@ void draw() {
   line(fWidth, (253*height)/300, width, (253*height)/300);
   if (mouseX<fWidth && mouseY<height) {//display coordinates
     noStroke();
-    fill(200);
+    fill(204);
     rect(fWidth+(width-fWidth)/2, 9*height/10, width-fWidth-20, height/15);
     float xCoor=(mouseX/((float)fWidth/xZoom)+(cX-xZoom/2));
     float yCoor=(cY+yZoom/2)-(mouseY/((float)fHeight/yZoom));
@@ -184,15 +198,18 @@ void mouseClicked() {
       cY=0;
       xZoom=4;
       yZoom=3;
-      float xCoor=(mouseX/((float)fWidth/4)-2);
-      float yCoor=-1*(mouseY/((float)fHeight/3)-1.5);
-      juliaNum=new ComplexNumber(xCoor, yCoor);
+      jReal=(mouseX/((float)fWidth/4)-2);
+      jImag=-1*(mouseY/((float)fHeight/3)-1.5);
+      tReal.setText(nf(jReal, 0, 2));
+      tImag.setText(nf(jImag, 0, 2));
+      juliaNum=new ComplexNumber(jReal, jImag);
       PImage julia=drawJulia(fIter, fWidth, fHeight, juliaNum);
       jBack=julia.get(fWidth/8-90, fHeight/8-15, 180, 30);
       imageMode(CORNER);
       image(julia, 0, 0);
       julia.save("juliasets/fractals"+clickCount+".png");
-    } else {//mandelbrot set
+    } 
+    else {//mandelbrot set
       currentSet=0;
       cX=0;
       cY=0;
@@ -220,8 +237,8 @@ void mouseClicked() {
     float imagC=0;
     String realText=null;
     String imagText=null;
-    realText=cp5.get(Textfield.class, "Real Component").getText();
-    imagText=cp5.get(Textfield.class, "Imaginary Component").getText();
+    realText=tReal.getText();
+    imagText=tImag.getText();
     if (realText.length()>0 && realText!=null) realC=Float.parseFloat(realText);
     else realC=0;
     if (imagText.length()>0 && imagText!=null) imagC=Float.parseFloat(imagText);
@@ -242,7 +259,7 @@ void mouseClicked() {
   }
   if (mouseX>((fWidth+(width-fWidth)/2)-0.04*width) && mouseX<((fWidth+(width-fWidth)/2)+0.04*width) && mouseY>(((113*height)/150)-height/30) && mouseY<(((113*height)/150)+height/30)) {//Enter button for # of iterations
     String iterText=null;
-    iterText=cp5.get(Textfield.class, "Number of Iterations:").getText();
+    iterText=cp5.get(Textfield.class, "Number of Iterations").getText();
     if (iterText.length()>0 && iterText!=null) {
       fIter=Integer.parseInt(iterText);
       PImage iterPic;
@@ -264,10 +281,12 @@ void keyReleased() {
         zoomed=drawJuliaZoomed(fIter, fWidth, fHeight, juliaNum, cX, cY, zoom);
         //saveFrame("fractals"+gifCount+".gif");
         //gifCount++;
-      } else zoomed=drawMandelbrotZoomed(fIter, fWidth, fHeight, cX, cY, zoom);
+      } 
+      else zoomed=drawMandelbrotZoomed(fIter, fWidth, fHeight, cX, cY, zoom);
       imageMode(CORNER);
       image(zoomed, 0, 0);
-    } else if (key == 'x' || key == 'X' || keyCode==LEFT || keyCode==DOWN) {
+    } 
+    else if (key == 'x' || key == 'X' || keyCode==LEFT || keyCode==DOWN) {
       cX=(mouseX/((float)fWidth/xZoom)+(cX-xZoom/2));
       cY=(cY+yZoom/2)-(mouseY/((float)fHeight/yZoom));
       if (clickCount%2==1) zoomed=drawJuliaZoomed(fIter, fWidth, fHeight, juliaNum, cX, cY, zoomOut); 
@@ -278,13 +297,24 @@ void keyReleased() {
   }
 }
 
+
+void keyPressed() {
+  switch(key) {
+    case('0'): rColors.deactivateAll(); break;
+    case('1'): rColors.activate(0); break;
+    case('2'): rColors.activate(1); break;
+    case('3'): rColors.activate(2); break;
+  }
+}
+
 int mandelbrot(ComplexNumber prev, ComplexNumber orig, int iter, int maxI) {
   ComplexNumber next=orig.add(prev.square());
   if (iter>=maxI) return maxI;
   else {
     if (next.magnitude()>=2) {
       return iter+1;
-    } else {
+    } 
+    else {
       return mandelbrot(next, orig, iter+1, maxI);
     }
   }
@@ -362,4 +392,12 @@ PImage drawJuliaZoomed(int iter, int mWidth, int mHeight, ComplexNumber c, float
 
 public void clear() {
   cp5.get(Textfield.class, "textValue").clear();
+}
+
+void controlEvent(ControlEvent theEvent) {
+  if (theEvent.isFrom(rColors)) {
+    print("got an event from "+theEvent.getName()+"\t");
+    println("\t "+theEvent.getValue());
+    rColorScheme = int(theEvent.group().value());
+  }
 }
