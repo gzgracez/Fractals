@@ -69,7 +69,7 @@ void setup() {
             .setColorLabel(color(0))
               .setAutoClear(false)
                 .setText("0")
-                  .setInputFilter(3)
+                  .setInputFilter(2)
                     ;
   tIter = cp5.addTextfield("Number of Iterations")
     .setPosition(fWidth+(width-fWidth-(0.08*width))/2, (48*height)/75)
@@ -82,16 +82,17 @@ void setup() {
                   .setInputFilter(1)
                     ;
   rColors = cp5.addRadioButton("Color Scheme")
-    .setPosition(20, 160)
+    .setPosition(fWidth+(width-fWidth-(0.08*width))/2, (64*height)/75)
       .setSize(40, 20)
         .setColorActive(color(255))
           .setColorLabel(color(255))
-            .setItemsPerRow(5)
+            .setItemsPerRow(1)
               .setSpacingColumn(50)
-                .addItem("Grayscale", 1)
-                  .addItem("Orangeish", 2)
-                    .addItem("Colorful", 3)
-                      ;
+                .setColorLabel(color(0))
+                  .addItem("Grayscale", 1)
+                    .addItem("Orangeish", 2)
+                      .addItem("Colorful", 3)
+                        ;
 
   /*  cp5.addButton("Previous Fractals")
    .setValue(0)
@@ -126,15 +127,15 @@ void draw() {
   noStroke();
   fill(204);
   fill(255);
-  rect(fWidth+(width-fWidth)/2, (height*2)/15, width*0.16, (height*2)/15);//previous fractals button
+  rect(fWidth+(width-fWidth)/2, (height*3)/30, width*0.16, (height*2)/15);//previous fractals button
   fill(0);
-  text("Previous Fractals", fWidth+(width-fWidth)/2, (height*2)/15);
-  if (mouseX>((fWidth+(width-fWidth)/2)-(width*0.08)) && mouseX<((fWidth+(width-fWidth)/2)+(width*0.08)) && mouseY>(((height*2)/15)-((height*2)/30)) && mouseY<(((height*2)/15)+((height*2)/30))) {
+  text("Previous Fractals", fWidth+(width-fWidth)/2, (height*3)/30);
+  if (mouseX>((fWidth+(width-fWidth)/2)-(width*0.08)) && mouseX<((fWidth+(width-fWidth)/2)+(width*0.08)) && mouseY>(((height*3)/30)-((height*2)/30)) && mouseY<(((height*3)/30)+((height*2)/30))) {
     noStroke();
     fill(0);
-    rect(fWidth+(width-fWidth)/2, (height*2)/15, int(width*0.16), int((height*2)/15));
+    rect(fWidth+(width-fWidth)/2, (height*3)/30, int(width*0.16), int((height*2)/15));
     fill(255);
-    text("Previous Fractals", fWidth+(width-fWidth)/2, (height*2)/15);
+    text("Previous Fractals", fWidth+(width-fWidth)/2, (height*3)/30);
   } 
   stroke(0);
   line(fWidth, (19*height)/75, width, (19*height)/75);
@@ -179,13 +180,13 @@ void draw() {
   if (mouseX<fWidth && mouseY<height) {//display coordinates
     noStroke();
     fill(204);
-    rect(fWidth+(width-fWidth)/2, 9*height/10, width-fWidth-20, height/15);
+    rect(fWidth+(width-fWidth)/2, 6*height/30, width-fWidth-20, height/15);
     float xCoor=(mouseX/((float)fWidth/xZoom)+(cX-xZoom/2));
     float yCoor=(cY+yZoom/2)-(mouseY/((float)fHeight/yZoom));
     ComplexNumber display=new ComplexNumber(xCoor, yCoor);
     textAlign(CENTER, CENTER);
     fill(0);
-    text("Coordinates: " + display, fWidth+(width-fWidth)/2, 9*height/10);
+    text("Coordinates: " + display, fWidth+(width-fWidth)/2, 6*height/30);
   }
 }
 
@@ -300,10 +301,18 @@ void keyReleased() {
 
 void keyPressed() {
   switch(key) {
-    case('0'): rColors.deactivateAll(); break;
-    case('1'): rColors.activate(0); break;
-    case('2'): rColors.activate(1); break;
-    case('3'): rColors.activate(2); break;
+    case('d'): 
+    rColors.deactivateAll(); 
+    break;
+    case('g'): 
+    rColors.activate(0); 
+    break;
+    case('o'): 
+    rColors.activate(1); 
+    break;
+    case('c'): 
+    rColors.activate(2); 
+    break;
   }
 }
 
