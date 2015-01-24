@@ -2,13 +2,23 @@
  Name: Grace Zhang
  Date: 12/20/14
  Notes: 
- -Previous Fractals Button: Allows the user to cycle through previous Julia Sets that he/she had generated
- -Uses ControlP5 to add textfields that allow the user to enter the a complex number (its real & imaginary components)
- and generates a Julia Set from this complex number
- -The textfield is restricted so that the user can only enter floats
+ -To zoom in, hit 'z' or the right or up arrow keys. The fractal
+ will recenter at your mouse position.
+ -To zoom out, hit 'x' or the left or down arrow keys. The fractal
+ will recenter at your mouse position.
+ -Previous Fractals Button: Allows the user to cycle through 
+ previous Julia Sets that he/she had generated
+ -Uses ControlP5 to add textfields that allow the user to 
+ enter the a complex number (its real & imaginary components)
+ and generates a Julia Set from this complex number 
+ (try-catch is used to catch parsing exceptions)
  -If no number is entered, the number is assumed to be zero
- -Uses ControlP5 to add textfields that allow the user to enter the desired number of iterations
- -Immediately shows effect (in the image of the fractal) when number of iterations is changed
+ -Uses ControlP5 to add textfields that allow the user to enter 
+ the desired number of iterations
+ -Uses ControlP5 to allow user to select different color schemes
+ -Immediately shows effect (in the image of the fractal) when the
+ number of iterations, complex number (for Julia Set), color scheme, 
+ etc. is changed
  -Previously generated Julia Sets are saved as .png files in the folder named "juliasets"
  -Uses relative coordinates
  -Button colors invert when mouse hovers over them
@@ -96,19 +106,6 @@ void setup() {
 }
 
 void draw() {
-  //println(tReal.getText());
-  //  if (w!=width) {
-  //    w=width;
-  //    h=int(.6*width);
-  //    frame.setSize(width, h);
-  //    println(w + "w, width" + width);
-  //    PImage mFractal=drawMand(fIter, fWidth, fHeight);
-  //    image(mFractal, 0, 0);
-  //  }
-  //  println(w + "w, width" + width);
-
-  fWidth=int(width*.8);
-  fHeight=height;
   if (width<1100) textSize(8);
   textAlign(CENTER, CENTER);
   colorMode(RGB, 255);
@@ -306,6 +303,23 @@ void keyReleased() {
   }
 }
 
+void mouseReleased() {
+  if (w!=width) {
+    if (width<800) width=800;
+    else w=width;
+    h=int(.6*width);
+    frame.setSize(width, h);
+    fWidth=int(width*.8);
+    fHeight=height;
+    tReal.setPosition(fWidth+(width-fWidth-(0.08*width))/2, (3*height)/9);
+    tImag.setPosition(fWidth+(width-fWidth-(0.08*width))/2, (32*height)/75);
+    tIter.setPosition(fWidth+(width-fWidth-(0.08*width))/2, (48*height)/75);
+    rColors.setPosition(fWidth+(width-fWidth-(0.08*width))/2, (64*height)/75);
+    println(w + "w, width" + width);
+    PImage mFractal=drawMand(fIter, fWidth, fHeight);
+    image(mFractal, 0, 0);
+  }
+}
 /*void keyPressed() {
  switch(key) {
  case('d'): 
@@ -322,23 +336,6 @@ void keyReleased() {
  break;
  }
  }*/
-
-void keyPressed() {
-  switch(key) {
-    case('d'): 
-    rColors.deactivateAll(); 
-    break;
-    case('g'): 
-    rColors.activate(0); 
-    break;
-    case('o'): 
-    rColors.activate(1); 
-    break;
-    case('c'): 
-    rColors.activate(2); 
-    break;
-  }
-}
 
 int mandelbrot(ComplexNumber prev, ComplexNumber orig, int iter, int maxI) {
   ComplexNumber next=orig.add(prev.square());
@@ -384,9 +381,7 @@ PImage drawJulia(int iter, int mWidth, int mHeight, ComplexNumber c) {
       else {
         if (rColorScheme==3 || rColorScheme==-1) mandelb.pixels[h*mandelb.width+w]=color(map(mandelbrot(a, c, 0, iter)%15, 0, 15, 0, iter), iter*.75, iter);
         else if (rColorScheme==2) mandelb.pixels[h*mandelb.width+w]=color(mandelbrot(a, c, 0, iter), iter*.75, iter);
-        else {
-          mandelb.pixels[h*mandelb.width+w]=color(map(mandelbrot(a, c, 0, iter)%15, 0, 15, 0, iter));
-        }
+        else mandelb.pixels[h*mandelb.width+w]=color(map(mandelbrot(a, c, 0, iter)%15, 0, 15, 0, iter));
       }
     }
   }
