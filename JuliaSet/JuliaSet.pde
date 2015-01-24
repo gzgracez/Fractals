@@ -93,13 +93,6 @@ void setup() {
                     .addItem("Orangeish", 2)
                       .addItem("Colorful", 3)
                         ;
-
-  /*  cp5.addButton("Previous Fractals")
-   .setValue(0)
-   .setPosition(fWidth+(width-fWidth)/2, height*0.08)
-   .setSize(int(width*0.16), int(width*0.08))
-   ;
-   */
 }
 
 void draw() {
@@ -313,8 +306,6 @@ void keyReleased() {
   }
 }
 
-
-<<<<<<< HEAD
 /*void keyPressed() {
  switch(key) {
  case('d'): 
@@ -331,7 +322,7 @@ void keyReleased() {
  break;
  }
  }*/
-=======
+
 void keyPressed() {
   switch(key) {
     case('d'): 
@@ -348,7 +339,6 @@ void keyPressed() {
     break;
   }
 }
->>>>>>> FETCH_HEAD
 
 int mandelbrot(ComplexNumber prev, ComplexNumber orig, int iter, int maxI) {
   ComplexNumber next=orig.add(prev.square());
