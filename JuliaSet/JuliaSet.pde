@@ -34,7 +34,7 @@ Textfield tImag;
 Textfield tIter;
 RadioButton rColors;
 float jReal=0, jImag=0;
-int rColorScheme=2;
+int rColorScheme=3;
 
 void setup() {
   frame.setResizable(true);
@@ -53,14 +53,14 @@ void setup() {
     .setPosition(fWidth+(width-fWidth-(0.08*width))/2, (3*height)/9)
       .setSize(int(0.08*width), int((4*height)/75))
         .setFont(font)
-          .setFocus(true)
-            .setColor(color(255, 0, 0))
-              .setColorLabel(color(0))
-                //.setColorBackground(color(255))
-                .setAutoClear(false)
-                  .setText("0")
-                    .setInputFilter(3)
-                      ;
+          //.setFocus(true)
+          .setColor(color(255, 0, 0))
+            .setColorLabel(color(0))
+              //.setColorBackground(color(255))
+              .setAutoClear(false)
+                .setText("0")
+                  .setInputFilter(3)
+                    ;
   tImag = cp5.addTextfield("Imaginary Component")
     .setPosition(fWidth+(width-fWidth-(0.08*width))/2, (32*height)/75)
       .setSize(int(0.08*width), int((4*height)/75))
@@ -209,8 +209,7 @@ void mouseClicked() {
       imageMode(CORNER);
       image(julia, 0, 0);
       julia.save("juliasets/fractals"+clickCount+".png");
-    } 
-    else {//mandelbrot set
+    } else {//mandelbrot set
       currentSet=0;
       cX=0;
       cY=0;
@@ -240,10 +239,28 @@ void mouseClicked() {
     String imagText=null;
     realText=tReal.getText();
     imagText=tImag.getText();
-    if (realText.length()>0 && realText!=null) realC=Float.parseFloat(realText);
-    else realC=0;
-    if (imagText.length()>0 && imagText!=null) imagC=Float.parseFloat(imagText);
-    else imagC=0;
+    if (realText.length()>0 && realText!=null) {
+      try {
+        realC=Float.parseFloat(realText);
+      } 
+      catch (Exception e) {
+        tReal.setText(nf(realC, 0, 2));
+      }
+    } else {
+      realC=0;
+      tReal.setText(nf(realC, 0, 2));
+    }
+    if (imagText.length()>0 && imagText!=null) {
+      try {
+        imagC=Float.parseFloat(imagText);
+      } 
+      catch (Exception e) {
+        tImag.setText(nf(imagC, 0, 2));
+      }
+    } else {
+      imagC=0;
+      tImag.setText(nf(imagC, 0, 2));
+    }
     currentSet=1;
     cX=0;
     cY=0;
@@ -282,12 +299,10 @@ void keyReleased() {
         zoomed=drawJuliaZoomed(fIter, fWidth, fHeight, juliaNum, cX, cY, zoom);
         //saveFrame("fractals"+gifCount+".gif");
         //gifCount++;
-      } 
-      else zoomed=drawMandelbrotZoomed(fIter, fWidth, fHeight, cX, cY, zoom);
+      } else zoomed=drawMandelbrotZoomed(fIter, fWidth, fHeight, cX, cY, zoom);
       imageMode(CORNER);
       image(zoomed, 0, 0);
-    } 
-    else if (key == 'x' || key == 'X' || keyCode==LEFT || keyCode==DOWN) {
+    } else if (key == 'x' || key == 'X' || keyCode==LEFT || keyCode==DOWN) {
       cX=(mouseX/((float)fWidth/xZoom)+(cX-xZoom/2));
       cY=(cY+yZoom/2)-(mouseY/((float)fHeight/yZoom));
       if (clickCount%2==1) zoomed=drawJuliaZoomed(fIter, fWidth, fHeight, juliaNum, cX, cY, zoomOut); 
@@ -299,6 +314,24 @@ void keyReleased() {
 }
 
 
+<<<<<<< HEAD
+/*void keyPressed() {
+ switch(key) {
+ case('d'): 
+ rColors.deactivateAll(); 
+ break;
+ case('g'): 
+ rColors.activate(0); 
+ break;
+ case('o'): 
+ rColors.activate(1); 
+ break;
+ case('c'): 
+ rColors.activate(2); 
+ break;
+ }
+ }*/
+=======
 void keyPressed() {
   switch(key) {
     case('d'): 
@@ -315,6 +348,7 @@ void keyPressed() {
     break;
   }
 }
+>>>>>>> FETCH_HEAD
 
 int mandelbrot(ComplexNumber prev, ComplexNumber orig, int iter, int maxI) {
   ComplexNumber next=orig.add(prev.square());
@@ -322,8 +356,7 @@ int mandelbrot(ComplexNumber prev, ComplexNumber orig, int iter, int maxI) {
   else {
     if (next.magnitude()>=2) {
       return iter+1;
-    } 
-    else {
+    } else {
       return mandelbrot(next, orig, iter+1, maxI);
     }
   }
@@ -339,7 +372,11 @@ PImage drawMand(int iter, int mWidth, int mHeight) {
       ComplexNumber a=new ComplexNumber(w/(float)(mandelb.width/4)-2, 1.5-(h/(float)(mandelb.height/3)));
       if (mandelbrot(zero, a, 0, iter)==iter) mandelb.pixels[h*mandelb.width+w]=color(0);
       //else mandelb.pixels[h*mandelb.width+w]=color(map(mandelbrot(zero, a, 0, iter),0,10,0,iter), iter*.75, iter);
-      else mandelb.pixels[h*mandelb.width+w]=color(map(mandelbrot(zero, a, 0, iter)%15, 0, 15, 0, iter), iter*.75, iter);
+      else {
+        if (rColorScheme==3 || rColorScheme==-1) mandelb.pixels[h*mandelb.width+w]=color(map(mandelbrot(zero, a, 0, iter)%15, 0, 15, 0, iter), iter*.75, iter);
+        else if (rColorScheme==2) mandelb.pixels[h*mandelb.width+w]=color(mandelbrot(zero, a, 0, iter), iter*.75, iter);
+        else mandelb.pixels[h*mandelb.width+w]=color(map(mandelbrot(zero, a, 0, iter)%15, 0, 15, 0, iter));
+      }
     }
   }
   mandelb.updatePixels();
@@ -354,8 +391,13 @@ PImage drawJulia(int iter, int mWidth, int mHeight, ComplexNumber c) {
     for (int w=0; w<mandelb.width; w++) {
       ComplexNumber a=new ComplexNumber(w/(float)(mandelb.width/4)-2, 1.5-(h/(float)(mandelb.height/3)));
       if (mandelbrot(a, c, 0, iter)==iter)mandelb.pixels[h*mandelb.width+w]=color(0);
-      else mandelb.pixels[h*mandelb.width+w]=color(map(mandelbrot(a, c, 0, iter)%15, 0, 15, 0, iter), iter*.75, iter);
-      //mandelb.pixels[h*mandelb.width+w]=color(mandelbrot(a, c, 0, iter), iter*.75, iter);
+      else {
+        if (rColorScheme==3 || rColorScheme==-1) mandelb.pixels[h*mandelb.width+w]=color(map(mandelbrot(a, c, 0, iter)%15, 0, 15, 0, iter), iter*.75, iter);
+        else if (rColorScheme==2) mandelb.pixels[h*mandelb.width+w]=color(mandelbrot(a, c, 0, iter), iter*.75, iter);
+        else {
+          mandelb.pixels[h*mandelb.width+w]=color(map(mandelbrot(a, c, 0, iter)%15, 0, 15, 0, iter));
+        }
+      }
     }
   }
   mandelb.updatePixels();
@@ -373,8 +415,11 @@ PImage drawMandelbrotZoomed(int iter, int mWidth, int mHeight, float x1, float y
     for (int w=0; w<mandelb.width; w++) {
       ComplexNumber a=new ComplexNumber(w/(float)(mandelb.width/xZoom)+(x1-xZoom/2), (y1+yZoom/2)-(h/(float)(mandelb.height/yZoom)));
       if (mandelbrot(zero, a, 0, iter)==iter) mandelb.pixels[h*mandelb.width+w]=color(0);
-      else mandelb.pixels[h*mandelb.width+w]=color(map(mandelbrot(zero, a, 0, iter)%15, 0, 15, 0, iter), iter*.75, iter);
-      //mandelb.pixels[h*mandelb.width+w]=color(mandelbrot(zero, a, 0, iter), iter*.75, iter);
+      else {
+        if (rColorScheme==3 || rColorScheme==-1) mandelb.pixels[h*mandelb.width+w]=color(map(mandelbrot(zero, a, 0, iter)%15, 0, 15, 0, iter), iter*.75, iter);
+        else if (rColorScheme==2) mandelb.pixels[h*mandelb.width+w]=color(mandelbrot(zero, a, 0, iter), iter*.75, iter);
+        else mandelb.pixels[h*mandelb.width+w]=color(map(mandelbrot(zero, a, 0, iter)%15, 0, 15, 0, iter));
+      }
     }
   }
   mandelb.updatePixels();
@@ -391,8 +436,11 @@ PImage drawJuliaZoomed(int iter, int mWidth, int mHeight, ComplexNumber c, float
     for (int w=0; w<mandelb.width; w++) {
       ComplexNumber a=new ComplexNumber(w/(float)(mandelb.width/xZoom)+(x1-xZoom/2), (y1+yZoom/2)-(h/(float)(mandelb.height/yZoom)));
       if (mandelbrot(a, c, 0, iter)==iter)mandelb.pixels[h*mandelb.width+w]=color(0);
-      else mandelb.pixels[h*mandelb.width+w]=color(map(mandelbrot(a, c, 0, iter)%15, 0, 15, 0, iter), iter*.75, iter);
-      //mandelb.pixels[h*mandelb.width+w]=color(mandelbrot(a, c, 0, iter), iter*.75, iter);
+      else {
+        if (rColorScheme==3 || rColorScheme==-1) mandelb.pixels[h*mandelb.width+w]=color(map(mandelbrot(a, c, 0, iter)%15, 0, 15, 0, iter), iter*.75, iter);
+        else if (rColorScheme==2) mandelb.pixels[h*mandelb.width+w]=color(mandelbrot(a, c, 0, iter), iter*.75, iter);
+        else mandelb.pixels[h*mandelb.width+w]=color(map(mandelbrot(a, c, 0, iter)%15, 0, 15, 0, iter));
+      }
     }
   }
   mandelb.updatePixels();
@@ -408,5 +456,10 @@ void controlEvent(ControlEvent theEvent) {
     print("got an event from "+theEvent.getName()+"\t");
     println("\t "+theEvent.getValue());
     rColorScheme = int(theEvent.group().value());
+    PImage colorPic;
+    if (clickCount%2==1) colorPic=drawJuliaZoomed(fIter, fWidth, fHeight, juliaNum, cX, cY, 1);
+    else colorPic=drawMandelbrotZoomed(fIter, fWidth, fHeight, cX, cY, 1);
+    imageMode(CORNER);
+    image(colorPic, 0, 0);
   }
 }
