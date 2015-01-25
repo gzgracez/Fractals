@@ -68,7 +68,7 @@ void setup() {
             .setColorLabel(color(0))
               //.setColorBackground(color(255))
               .setAutoClear(false)
-                .setText("0")
+                .setText("0.00")
                   .setInputFilter(3)
                     ;
   tImag = cp5.addTextfield("Imaginary Component")
@@ -78,7 +78,7 @@ void setup() {
           .setColor(color(255, 0, 0))
             .setColorLabel(color(0))
               .setAutoClear(false)
-                .setText("0")
+                .setText("0.00")
                   .setInputFilter(2)
                     ;
   tIter = cp5.addTextfield("Number of Iterations")
