@@ -7,7 +7,7 @@
  *
  */
 
-public class ComplexNumber {// implements Comparable<PrivateComparableClass>
+public class ComplexNumber {// implements Comparable<ComplexNumber>
 
   private float a, b;
   /**
