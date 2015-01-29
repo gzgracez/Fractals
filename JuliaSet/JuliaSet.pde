@@ -212,12 +212,12 @@ void mouseClicked() {
   if (mouseX<fWidth && mouseY<height) {//clicking the fractal screen
     if (clickCount%2==0) {//julia set
       currentSet=1;
-      cX=0;
-      cY=0;
-      xZoom=4;
-      yZoom=3;
-      jReal=(mouseX/((float)fWidth/4)-2);
-      jImag=-1*(mouseY/((float)fHeight/3)-1.5);
+      /*cX=0;
+       cY=0;
+       xZoom=4;
+       yZoom=3;*/
+      jReal=(mouseX/((float)fWidth/xZoom)+(cX-xZoom/2));
+      jImag=(cY+yZoom/2)-(mouseY/((float)fHeight/yZoom));
       tReal.setText(nf(jReal, 0, 2));
       tImag.setText(nf(jImag, 0, 2));
       juliaNum=new ComplexNumber(jReal, jImag);
@@ -338,7 +338,7 @@ void keyReleased() {
 
 void mousePressed() {
   if (mouseX<fWidth && mouseY<height) {
-    xOffset = (mouseX/((float)fWidth/xZoom)+(cX-xZoom/2); 
+    xOffset = (mouseX/((float)fWidth/xZoom)+(cX-xZoom/2));
     yOffset = (cY+yZoom/2)-(mouseY/((float)fHeight/yZoom));
   }
 }
