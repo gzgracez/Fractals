@@ -40,7 +40,7 @@ int w=800;
 int h=int(.6*w);
 int fWidth=int(w*.8), fHeight=h;
 int picNum=0;//for previous julia sets
-int gifCount=0;
+//int gifCount=0;
 ComplexNumber juliaNum=new ComplexNumber(0, 0);
 Textfield tReal;
 Textfield tImag;
@@ -204,10 +204,6 @@ void mouseClicked() {
       julia.save("juliasets/fractals"+clickCount+".png");
     } else {//mandelbrot set
       currentSet=0;
-      cX=0;
-      cY=0;
-      xZoom=4;
-      yZoom=3;
       imageMode(CORNER);
       PImage mFractal=drawMand(fIter, fWidth, fHeight);
       image(mFractal, 0, 0);
@@ -255,10 +251,6 @@ void mouseClicked() {
       tImag.setText(nf(imagC, 0, 2));
     }
     currentSet=1;
-    cX=0;
-    cY=0;
-    xZoom=4;
-    yZoom=3;
     juliaNum=new ComplexNumber(realC, imagC);
     PImage julia=drawJulia(fIter, fWidth, fHeight, juliaNum);
     jBack=julia.get(fWidth/8-90, fHeight/8-15, 180, 30);
@@ -333,6 +325,10 @@ int mandelbrot(ComplexNumber prev, ComplexNumber orig, int iter, int maxI) {
 }
 
 PImage drawMand(int iter, int mWidth, int mHeight) {
+  cX=0;
+  cY=0;
+  xZoom=4;
+  yZoom=3;
   ComplexNumber zero=new ComplexNumber(0, 0);
   PImage mandelb=createImage(mWidth, mHeight, ARGB);
   colorMode(HSB, iter);
@@ -353,6 +349,10 @@ PImage drawMand(int iter, int mWidth, int mHeight) {
 }
 
 PImage drawJulia(int iter, int mWidth, int mHeight, ComplexNumber c) {
+  cX=0;
+  cY=0;
+  xZoom=4;
+  yZoom=3;
   PImage mandelb=createImage(mWidth, mHeight, ARGB);
   colorMode(HSB, iter);
   mandelb.loadPixels();
@@ -420,8 +420,8 @@ void zoomInMethod() {
   cY=(cY+yZoom/2)-(mouseY/((float)fHeight/yZoom));
   if (clickCount%2==1) {
     zoomed=drawJuliaZoomed(fIter, fWidth, fHeight, juliaNum, cX, cY, zoom);
-    zoomed.save("fractal"+gifCount+".gif");
-    gifCount++;
+    //zoomed.save("fractal"+gifCount+".gif");
+    //gifCount++;
   } else zoomed=drawMandelbrotZoomed(fIter, fWidth, fHeight, cX, cY, zoom);
   imageMode(CORNER);
   image(zoomed, 0, 0);
