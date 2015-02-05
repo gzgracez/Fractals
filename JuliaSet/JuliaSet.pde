@@ -3,25 +3,25 @@
  Date: 12/20/14
  Notes: 
  -To zoom in, hit 'z' or the right or up arrow keys. The fractal
-   will recenter at your mouse position.
+ will recenter at your mouse position.
  -To zoom out, hit 'x' or the left or down arrow keys. The fractal
-   will recenter at your mouse position.
+ will recenter at your mouse position.
  -mouseWheel can be used to zoom in and out (zoom recentering at
-   your mouse position)
- -User can drag the fractal around on the screen
+ your mouse position)
+ -User can drag the fractal by its center around on the screen
  -Previous Fractals Button: Allows the user to cycle through 
-   previous Julia Sets that he/she had generated
+ previous Julia Sets that he/she had generated
  -Uses ControlP5 to add textfields that allow the user to 
-   enter the a complex number (its real & imaginary components)
-   and generates a Julia Set from this complex number 
-   (try-catch is used to catch parsing exceptions)
-   -If no number is entered, the number is assumed to be zero
+ enter the a complex number (its real & imaginary components)
+ and generates a Julia Set from this complex number 
+ (try-catch is used to catch parsing exceptions)
+ -If no number is entered, the number is assumed to be zero
  -Uses ControlP5 to add textfields that allow the user to enter 
-   the desired number of iterations
+ the desired number of iterations
  -Uses ControlP5 to allow user to select different color schemes
  -Immediately shows effect (in the image of the fractal) when the
-   number of iterations, complex number (for Julia Set), color scheme, 
-   etc. is changed
+ number of iterations, complex number (for Julia Set), color scheme, 
+ etc. is changed
  -Previously generated Julia Sets are saved as .png files in the folder named "juliasets"
  -Uses relative coordinates
  -Button colors invert when mouse hovers over them
@@ -40,7 +40,7 @@ int w=800;
 int h=int(.6*w);
 int fWidth=int(w*.8), fHeight=h;
 int picNum=0;//for previous julia sets
-//int gifCount=0;
+int gifCount=0;
 ComplexNumber juliaNum=new ComplexNumber(0, 0);
 Textfield tReal;
 Textfield tImag;
@@ -69,10 +69,8 @@ void setup() {
     .setPosition(fWidth+(width-fWidth-(0.08*width))/2, (3*height)/9)
       .setSize(int(0.08*width), int((4*height)/75))
         .setFont(font)
-          //.setFocus(true)
           .setColor(color(255, 0, 0))
             .setColorLabel(color(0))
-              //.setColorBackground(color(255))
               .setAutoClear(false)
                 .setText("0.00")
                   .setInputFilter(3)
@@ -194,10 +192,6 @@ void mouseClicked() {
   if (mouseX<fWidth && mouseY<height) {//clicking the fractal screen
     if (clickCount%2==0) {//julia set
       currentSet=1;
-      /*cX=0;
-       cY=0;
-       xZoom=4;
-       yZoom=3;*/
       jReal=(mouseX/((float)fWidth/xZoom)+(cX-xZoom/2));
       jImag=(cY+yZoom/2)-(mouseY/((float)fHeight/yZoom));
       tReal.setText(nf(jReal, 0, 2));
@@ -347,7 +341,6 @@ PImage drawMand(int iter, int mWidth, int mHeight) {
     for (int w=0; w<mandelb.width; w++) {
       ComplexNumber a=new ComplexNumber(w/(float)(mandelb.width/4)-2, 1.5-(h/(float)(mandelb.height/3)));
       if (mandelbrot(zero, a, 0, iter)==iter) mandelb.pixels[h*mandelb.width+w]=color(0);
-      //else mandelb.pixels[h*mandelb.width+w]=color(map(mandelbrot(zero, a, 0, iter),0,10,0,iter), iter*.75, iter);
       else {
         if (rColorScheme==3 || rColorScheme==-1) mandelb.pixels[h*mandelb.width+w]=color(map(mandelbrot(zero, a, 0, iter)%15, 0, 15, 0, iter), iter*.75, iter);
         else if (rColorScheme==2) mandelb.pixels[h*mandelb.width+w]=color(mandelbrot(zero, a, 0, iter), iter*.75, iter);
@@ -427,9 +420,8 @@ void zoomInMethod() {
   cY=(cY+yZoom/2)-(mouseY/((float)fHeight/yZoom));
   if (clickCount%2==1) {
     zoomed=drawJuliaZoomed(fIter, fWidth, fHeight, juliaNum, cX, cY, zoom);
-    //zoomed.save("fractal"+gifCount+".gif");
-    //saveFrame("fractal"+gifCount+".gif");
-    //gifCount++;
+    zoomed.save("fractal"+gifCount+".gif");
+    gifCount++;
   } else zoomed=drawMandelbrotZoomed(fIter, fWidth, fHeight, cX, cY, zoom);
   imageMode(CORNER);
   image(zoomed, 0, 0);
