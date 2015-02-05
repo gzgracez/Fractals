@@ -3,22 +3,25 @@
  Date: 12/20/14
  Notes: 
  -To zoom in, hit 'z' or the right or up arrow keys. The fractal
- will recenter at your mouse position.
+   will recenter at your mouse position.
  -To zoom out, hit 'x' or the left or down arrow keys. The fractal
- will recenter at your mouse position.
+   will recenter at your mouse position.
+ -mouseWheel can be used to zoom in and out (zoom recentering at
+   your mouse position)
+ -User can drag the fractal around on the screen
  -Previous Fractals Button: Allows the user to cycle through 
- previous Julia Sets that he/she had generated
+   previous Julia Sets that he/she had generated
  -Uses ControlP5 to add textfields that allow the user to 
- enter the a complex number (its real & imaginary components)
- and generates a Julia Set from this complex number 
- (try-catch is used to catch parsing exceptions)
- -If no number is entered, the number is assumed to be zero
+   enter the a complex number (its real & imaginary components)
+   and generates a Julia Set from this complex number 
+   (try-catch is used to catch parsing exceptions)
+   -If no number is entered, the number is assumed to be zero
  -Uses ControlP5 to add textfields that allow the user to enter 
- the desired number of iterations
+   the desired number of iterations
  -Uses ControlP5 to allow user to select different color schemes
  -Immediately shows effect (in the image of the fractal) when the
- number of iterations, complex number (for Julia Set), color scheme, 
- etc. is changed
+   number of iterations, complex number (for Julia Set), color scheme, 
+   etc. is changed
  -Previously generated Julia Sets are saved as .png files in the folder named "juliasets"
  -Uses relative coordinates
  -Button colors invert when mouse hovers over them
@@ -47,6 +50,7 @@ float jReal=0, jImag=0;
 int rColorScheme=3;
 float xOffset=0;
 float yOffset=0;
+boolean dragged=false;
 
 void setup() {
   //frame.setResizable(true);
@@ -109,31 +113,6 @@ void setup() {
 
 void draw() {
   if (width<1100) textSize(8);
-  /*if (w!=width || h!=height) {
-   background(204);
-   if (width<800) {
-   width=800;
-   w=width;
-   } else w=width;
-   //    h=int(.6*width);
-   fWidth=int(width*.8);
-   fHeight=int(.6*width);
-   if (height<fHeight) {
-   h=fHeight;
-   fHeight=height;
-   fWidth=(height*5)/3;
-   }
-   //if (height<fHeight) frame.setSize(w, fHeight);
-   tReal.setPosition(fWidth+(width-fWidth-(0.08*width))/2, (3*height)/9);
-   tImag.setPosition(fWidth+(width-fWidth-(0.08*width))/2, (32*height)/75);
-   tIter.setPosition(fWidth+(width-fWidth-(0.08*width))/2, (48*height)/75);
-   rColors.setPosition(fWidth+(width-fWidth-(0.08*width))/2, (64*height)/75);
-   PImage mFractal=drawMand(fIter, fWidth, fHeight);
-   image(mFractal, 0, 0);
-   println(w + "w, width" + width);
-   } else {
-   println("yes");
-   }*/
   textAlign(CENTER, CENTER);
   colorMode(RGB, 255);
   rectMode(CORNER);
@@ -204,6 +183,9 @@ void draw() {
     textAlign(CENTER, CENTER);
     fill(0);
     text("Coordinates: " + display, fWidth+(width-fWidth)/2, 6*height/30);
+  }
+  if (dragged) {
+    redrawFractal();
   }
 }
 
@@ -336,33 +318,13 @@ void mouseWheel(MouseEvent event) {
 
 void mouseDragged() {
   if (mouseX<fWidth && mouseY<height) {
-    //dragged=true;
-    /*PImage zoomed;
-     cX-=(mouseX/((float)fWidth/xZoom)+(cX-xZoom/2));
-     cY-=(cY+yZoom/2)-(mouseY/((float)fHeight/yZoom));
-     if (clickCount%2==1) zoomed=drawJuliaZoomed(fIter, fWidth, fHeight, juliaNum, cX, cY, 1); 
-     else zoomed=drawMandelbrotZoomed(fIter, fWidth, fHeight, cX, cY, 1);
-     imageMode(CORNER);
-     image(zoomed, 0, 0);*/
+    dragged=true;
   }
 }
 
-/*void keyPressed() {
- switch(key) {
- case('d'): 
- rColors.deactivateAll(); 
- break;
- case('g'): 
- rColors.activate(0); 
- break;
- case('o'): 
- rColors.activate(1); 
- break;
- case('c'): 
- rColors.activate(2); 
- break;
- }
- }*/
+void mouseReleased() {
+  dragged=false;
+}
 
 int mandelbrot(ComplexNumber prev, ComplexNumber orig, int iter, int maxI) {
   ComplexNumber next=orig.add(prev.square());
@@ -483,6 +445,16 @@ void zoomOutMethod() {
   image(zoomed, 0, 0);
 }
 
+void redrawFractal() {
+  PImage zoomed;
+  cX-=(mouseX/((float)fWidth/xZoom)+(cX-xZoom/2));
+  cY-=(cY+yZoom/2)-(mouseY/((float)fHeight/yZoom));
+  if (clickCount%2==1) zoomed=drawJuliaZoomed(fIter, fWidth, fHeight, juliaNum, cX, cY, 1); 
+  else zoomed=drawMandelbrotZoomed(fIter, fWidth, fHeight, cX, cY, 1);
+  imageMode(CORNER);
+  image(zoomed, 0, 0);
+}
+
 public void clear() {
   cp5.get(Textfield.class, "textValue").clear();
 }
@@ -497,3 +469,4 @@ void controlEvent(ControlEvent theEvent) {
     image(colorPic, 0, 0);
   }
 }
+
