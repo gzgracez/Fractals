@@ -13,7 +13,7 @@ Fractals
 * Buttons for people to choose a color scheme (grayscale, orangeish, colorful)
 
 ---
-_Mandelbrot Set_
 ![mandelbrot](/offlineImage.png)
-_Julia Set (generated off of the complex number -0.79 + 0.19i)_
+_Mandelbrot Set_
 ![juliaSet](/juliaSet.png)
+_Julia Set (generated off of the complex number -0.79 + 0.19i)_
