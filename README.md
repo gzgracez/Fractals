@@ -1,4 +1,4 @@
-Fractals
+Mandelbrot and Julia Sets
 ========
 
 * Displays the mandelbrot set on a complex number plane 
