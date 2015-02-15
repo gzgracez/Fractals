@@ -15,5 +15,6 @@ Fractals
 ---
 ![mandelbrot](/offlineImage.png)
 _Mandelbrot Set_
+
 ![juliaSet](/juliaSet.png)
 _Julia Set (generated off of the complex number -0.79 + 0.19i)_
