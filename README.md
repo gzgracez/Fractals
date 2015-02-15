@@ -10,4 +10,8 @@ Fractals
 * Previous Fractals button - allows the user to cycle through previously generated julia sets
 * Textfields to allow the user to enter the real and imaginary components of the complex number for a julia set (ControlP5 library)
 * Textfield for user to enter the desired number of iterations 
-* Buttons for people to choose a color scheme (grayscale, reddish, colorful)
+* Buttons for people to choose a color scheme (grayscale, orangeish, colorful)
+
+---
+![mandelbrot](/offlineImage.png)
+![juliaSet](/juliaSet.png)

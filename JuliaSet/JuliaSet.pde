@@ -110,7 +110,7 @@ void setup() {
 }
 
 void draw() {
-  saveFrame("test.png");
+  //saveFrame("test.png");
   if (width<1100) textSize(8);
   textAlign(CENTER, CENTER);
   colorMode(RGB, 255);
