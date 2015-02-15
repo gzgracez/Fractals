@@ -19,5 +19,6 @@ _Mandelbrot Set_
 ![juliaSet](/juliaSet.png)
 _Julia Set (generated off of the complex number -0.79 + 0.19i)_
 
-![juliaSetZoom](/JuliaSet.gif)
+![juliaSetZoom](/JuliaSet.gif)	
+
 _Zooming in on one point of the Julia Set_
