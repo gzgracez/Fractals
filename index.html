@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Mandelbrot and Julia Set Generator</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="Interactive Online Fractals Generator - generates the Mandelbrot Set and Julia Sets based on where the user clicks on the Mandelbrot Set! An offline version is available for download.">
+  <meta name="keywords" content="fractal, mandelbrot set, julia set, complex numbers, generator, mandelbrot, julia, custom, geometrical, maker, builder">
+  <link type="text/css" rel="stylesheet" href="style.css" />
+  <script language="javascript" src="javascript/p5.js"></script>
+  <script language="javascript" src="javascript/p5.dom.js"></script>
+
+  <script language="javascript" src="fractals.js"></script>
+
+  <link rel="shortcut icon" href="fractal.ico" type="image/x-icon">
+  <link rel="icon" href="fractal.ico" type="image/x-icon">
+</head>
+
+<body>
+
+  <center>
+    <h1>The Mandelbrot and Julia Sets!</h1>
+  </center>
+  <p>
+    The fractal shown will alternate between the Mandelbrot Set and a Julia Set generated based on where on the Mandelbrot Set you click.
+  </p>
+  <div>
+
+    <p>You can download an offline application here for <a href="https://github.com/gzgracez/FractalMacApp/archive/master.zip">Macs</a>, <a href="https://github.com/gzgracez/FractalMacApp/archive/windows32app.zip">Windows 32</a>, or <a href="https://github.com/gzgracez/FractalMacApp/archive/windowsApp64.zip">Windows 64</a>. This will run faster and has more options than the online version.</p>
+    <hr></hr>
+
+    <h2>Interactive Online Application:</h2>
+    <p>
+      <strong><u>Coordinates:</u></strong> The fractals are on a complex coordinate plane. The original (before zooming) y-coordinates go from -1.5i to 1.5i and the original x-coordinates go from -2 to 2. The Julia Set is generated from the complex number that corresponds to your mouse coordinates.
+    </p>
+    <p>
+      <strong><u>Switch:</u></strong> You can click anywhere on the image of the fractal to generate either a Mandelbrot or a Julia Set (based on your mouse coordinates; the fractal will resize to the default (original) x and y range every time a new fractal is generated). The application will alternate between a Mandelbrot Set and a Julia Set, as the Julia Set will be generated from a point on the Mandelbrot Set.
+    </p>
+    <p>
+      <strong><u>Zooming:</u></strong> To <strong>zoom in</strong> or <strong>zoom out</strong> on the fractal, use the keyboard. The up and right arrow keys and the 'z' key will zoom in on the fractal, while the down and left arrow keys and the 'x' key will zoom out from the fractal. Zooming in or out will recenter the image at wherever your mouse is on the fractal.
+    </p>
+
+    <center>
+      <div id="myContainer"></div>
+    </center>
+    <p><font size="2">
+    Note: The online application works best on Firefox. Click once, and wait for the new fractal to load. Clicking multiple times will slow this process.
+  </font>
+    </p>
+
+    <p></p>
+    <div id="cTextPos" class="span"></div>
+    <p></p>
+
+    <table style="width:540px">
+      <tr>
+        <td>
+          <div id="sliderPos" class="span">
+            <strong>Number of Iterations: </strong>
+          </div>
+        </td>
+        <td>
+          <div id="iterTextPos" class="span"></div>
+        </td>
+      </tr>
+    </table>
+    <p><font size="3">(Ranges from 3 to 100 iterations. 30 iterations is the default. May take a while to load. More iterations will take longer to load.)</font>
+    </p>
+
+    <h1></h1>
+    <div id="buttonPos">
+      <strong>Save Current Fractal:</strong>
+    </div>
+
+    <hr></hr>
+    <div>
+      <h2>Offline Application:</h2>
+      <center>
+        <a href="offlineImage.png">
+          <img src="offlineImage.png" alt="Offline Application" width=75%>
+        </a>
+      </center>
+      <p>This is what the offline application looks like. You can cycle through your previously generated Julia Sets, enter a complex number (the real and imaginary components of a complex number) and generate a Julia Set off of that complex number, enter in the maximum number of iterations you would like the application to run for each point on the image of the fractal, and also see your mouse coordinates displayed as a complex number.</p>
+
+</body>
+
+</html>
