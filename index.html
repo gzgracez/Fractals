@@ -6,7 +6,9 @@
   <meta charset="UTF-8">
   <meta name="description" content="Interactive Online Fractals Generator - generates the Mandelbrot Set and Julia Sets based on where the user clicks on the Mandelbrot Set! An offline version is available for download.">
   <meta name="keywords" content="fractal, mandelbrot set, julia set, complex numbers, generator, mandelbrot, julia, custom, geometrical, maker, builder">
-  <link type="text/css" rel="stylesheet" href="style.css" />
+  <!-- Bootstrap core CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="css/style.css" />
   <script language="javascript" src="javascript/p5.js"></script>
   <script language="javascript" src="javascript/p5.dom.js"></script>
 
@@ -19,7 +21,7 @@
 <body>
 
   <center>
-    <h1>The Mandelbrot and Julia Sets!</h1>
+    <h1><strong>The Mandelbrot and Julia Sets!</strong></h1>
   </center>
   <p>
     The fractal shown will alternate between the Mandelbrot Set and a Julia Set generated based on where on the Mandelbrot Set you click.
@@ -29,7 +31,7 @@
     <p>You can download an offline application here for <a href="https://github.com/gzgracez/FractalMacApp/archive/master.zip">Macs</a>, <a href="https://github.com/gzgracez/FractalMacApp/archive/windows32app.zip">Windows 32</a>, or <a href="https://github.com/gzgracez/FractalMacApp/archive/windowsApp64.zip">Windows 64</a>. This will run faster and has more options than the online version.</p>
     <hr></hr>
 
-    <h2>Interactive Online Application:</h2>
+    <h2><strong>Interactive Online Application:</strong></h2>
     <p>
       <strong><u>Coordinates:</u></strong> The fractals are on a complex coordinate plane. The original (before zooming) y-coordinates go from -1.5i to 1.5i and the original x-coordinates go from -2 to 2. The Julia Set is generated from the complex number that corresponds to your mouse coordinates.
     </p>
@@ -74,12 +76,13 @@
 
     <hr></hr>
     <div>
-      <h2>Offline Application:</h2>
+      <h2><strong>Offline Application:</strong></h2>
       <center>
         <a href="offlineImage.png">
           <img src="offlineImage.png" alt="Offline Application" width=75%>
         </a>
       </center>
+      <br>
       <p>This is what the offline application looks like. You can cycle through your previously generated Julia Sets, enter a complex number (the real and imaginary components of a complex number) and generate a Julia Set off of that complex number, enter in the maximum number of iterations you would like the application to run for each point on the image of the fractal, and also see your mouse coordinates displayed as a complex number.</p>
 
 </body>
